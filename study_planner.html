@@ -1,1486 +1,576 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>📘 Semester 6 Study Planner</title>
-    <style>
-        /* ====== Slight beautification + original styles preserved ====== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>📘 Semester 6 Study Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0d0f14;--surface:#151820;--surface2:#1c2030;--surface3:#242840;--border:#2a2f45;
+  --accent:#6c63ff;--accent2:#ff6b6b;--accent3:#43e97b;--accent4:#f9ca24;
+  --text:#e8eaf0;--text2:#8b90a8;--text3:#555a70;
+  --SQA:#6c63ff;--IS:#ff6b6b;--BIDA:#43e97b;--FGIS:#f9ca24;--ITIM:#38c9f0;
+}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse 80% 60% at 20% -10%,rgba(108,99,255,0.12) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 110%,rgba(67,233,123,0.07) 0%,transparent 60%);pointer-events:none;z-index:0;}
+.container{max-width:1280px;margin:0 auto;padding:20px;position:relative;z-index:1;}
 
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+/* HEADER */
+.header{padding:36px 0 20px;text-align:center;}
+.header-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;}
+.header h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;background:linear-gradient(135deg,#fff 30%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.header-meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:8px;}
+.header-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--text2);}
+.header-badge.alert{border-color:rgba(255,107,107,0.4);background:rgba(255,107,107,0.08);color:#ff9a9a;}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
-            border-radius: 15px;
-            box-shadow: 0 18px 40px rgba(20, 20, 60, 0.18);
-            overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.04);
-        }
+/* COUNTDOWN */
+.countdown-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;margin-bottom:16px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+.countdown-item{text-align:center;min-width:50px;}
+.countdown-num{font-size:1.7rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--accent);}
+.countdown-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
+.countdown-sep{color:var(--text3);font-size:1.3rem;padding-bottom:8px;}
+.countdown-note{margin-left:auto;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);border-radius:8px;padding:7px 13px;font-size:12px;color:#ff9a9a;}
 
-        .header {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: white;
-            padding: 28px 30px;
-            text-align: center;
-            box-shadow: inset 0 -1px 0 rgba(255,255,255,0.03);
-        }
+/* NAV */
+.nav-tabs{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;gap:4px;margin-bottom:18px;overflow-x:auto;}
+.nav-tab{flex:1;min-width:110px;padding:10px 12px;text-align:center;color:var(--text2);cursor:pointer;border:none;background:none;font-size:13px;font-family:'Space Grotesk',sans-serif;border-radius:7px;transition:all 0.2s;white-space:nowrap;}
+.nav-tab:hover{color:var(--text);background:var(--surface2);}
+.nav-tab.active{background:var(--accent);color:#fff;font-weight:600;}
+.tab-content{display:none;}.tab-content.active{display:block;}
 
-        .header h1 {
-            font-size: 2.2em;
-            margin-bottom: 8px;
-            letter-spacing: 0.2px;
-        }
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;position:relative;overflow:hidden;}
+.stat-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:3px;background:var(--accent);}
+.stat-card:nth-child(2)::after{background:var(--accent2);}.stat-card:nth-child(3)::after{background:var(--accent3);}.stat-card:nth-child(4)::after{background:var(--accent4);}
+.stat-num{font-size:2rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.stat-label{font-size:11px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px;}
 
-        .header p {
-            font-size: 1em;
-            opacity: 0.95;
-        }
+/* SUBJECT CARDS */
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:16px;}
+.subject-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;transition:transform 0.2s,border-color 0.2s;}
+.subject-card:hover{transform:translateY(-3px);border-color:var(--accent);}
+.subject-name{font-size:12px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+.subject-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.progress-wrap{background:var(--surface3);border-radius:10px;height:5px;overflow:hidden;margin:6px 0;}
+.progress-fill{height:100%;border-radius:10px;transition:width 0.4s;background:var(--accent);}
+.subject-meta{font-size:11px;color:var(--text3);display:flex;justify-content:space-between;}
 
-        .nav-tabs {
-            display: flex;
-            background: #34495e;
-            padding: 0;
-            gap: 0;
-        }
+/* CYCLE GRID */
+.cycle-info{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
+.cycle-info h3{font-size:12px;color:var(--text2);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;}
+.cycle-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.cycle-day{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;}
+.cycle-day.today-cycle{border-color:var(--accent);background:rgba(108,99,255,0.12);}
+.cycle-day-num{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;margin-bottom:4px;}
+.cycle-subjects{display:flex;flex-direction:column;gap:2px;}
+.cycle-pill{border-radius:4px;padding:2px 4px;font-size:9px;font-weight:600;}
 
-        .nav-tab {
-            flex: 1;
-            padding: 14px 12px;
-            text-align: center;
-            color: white;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 15px;
-            transition: all 0.25s ease;
-            user-select: none;
-        }
+/* TIMETABLE */
+.week-sel-wrap{overflow-x:auto;margin-bottom:14px;}
+.week-selector{display:flex;gap:6px;min-width:max-content;padding-bottom:4px;}
+.week-btn{padding:6px 14px;border:1px solid var(--border);background:var(--surface);color:var(--text2);border-radius:20px;cursor:pointer;font-size:12px;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;}
+.week-btn:hover{border-color:var(--accent);color:var(--text);}
+.week-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+.week-btn.cur{border-color:var(--accent3);color:var(--accent3);}
 
-        .nav-tab:hover {
-            background: #2c3e50;
-        }
+.day-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.day-block.today-hl{border-color:rgba(249,202,36,0.45);}
+.day-hdr{padding:11px 16px;display:flex;justify-content:space-between;align-items:center;background:var(--surface2);border-bottom:1px solid var(--border);}
+.day-title{font-weight:600;font-size:13px;display:flex;align-items:center;gap:8px;}
+.today-badge{background:var(--accent4);color:#000;font-size:10px;padding:1px 7px;border-radius:10px;font-weight:700;}
+.day-prog{font-size:11px;background:rgba(67,233,123,0.12);color:var(--accent3);border:1px solid rgba(67,233,123,0.25);padding:3px 9px;border-radius:10px;}
+.sess-table{width:100%;}
+.sess-table th{background:var(--surface3);padding:8px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);font-weight:500;}
+.sess-table td{padding:9px 14px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle;}
+.sess-table tr:last-child td{border-bottom:none;}
+.sess-table tr.done-row td{color:var(--text2);background:rgba(67,233,123,0.03);}
+.time-cell{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);}
+.subj-tag{display:inline-block;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:600;}
+.status-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:3px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;}
+.status-btn:hover{border-color:var(--accent);color:var(--accent);}
+.status-btn.is-done{background:rgba(67,233,123,0.12);border-color:rgba(67,233,123,0.35);color:var(--accent3);}
 
-        .nav-tab.active {
-            background: linear-gradient(90deg,#e74c3c,#e14d4d);
-            font-weight: 700;
-            letter-spacing: 0.4px;
-        }
+/* SECTION TITLE */
+.section-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);font-weight:600;margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
 
-        .tab-content {
-            display: none;
-            padding: 26px 30px;
-        }
+/* FORMS */
+.log-form{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
+.form-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;}
+.form-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:110px;}
+.form-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;}
+input,select,textarea{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 11px;border-radius:7px;font-size:13px;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color 0.2s;}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+textarea{resize:vertical;min-height:52px;}
+select option{background:var(--surface2);}
 
-        .tab-content.active {
-            display: block;
-        }
+.btn{padding:8px 16px;border:none;border-radius:7px;cursor:pointer;font-size:13px;font-family:'Space Grotesk',sans-serif;font-weight:600;transition:all 0.2s;display:inline-flex;align-items:center;gap:5px;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-success{background:rgba(67,233,123,0.15);color:var(--accent3);border:1px solid rgba(67,233,123,0.3);}
+.btn-danger{background:rgba(255,107,107,0.15);color:#ff9a9a;border:1px solid rgba(255,107,107,0.3);}
+.btn-sm{padding:4px 10px;font-size:11px;}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.1);}
 
-        .subject-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 18px;
-            margin-bottom: 22px;
-        }
+.sess-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.sess-card.tc{border-color:rgba(67,233,123,0.28);}
 
-        .subject-card {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 16px 18px;
-            border-left: 5px solid #e74c3c;
-            transition: transform 0.22s ease, box-shadow 0.22s ease;
-            box-shadow: 0 6px 18px rgba(20,30,80,0.04);
-        }
+.task-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.task-item.done{opacity:0.45;}.task-item.done .task-text{text-decoration:line-through;}
+.task-text{font-size:13px;}
+.task-meta{font-size:11px;color:var(--text3);margin-top:3px;display:flex;gap:7px;}
+.pri{font-size:10px;padding:1px 7px;border-radius:10px;font-weight:600;}
+.p-high{background:rgba(255,107,107,0.2);color:#ff9a9a;}.p-medium{background:rgba(249,202,36,0.2);color:var(--accent4);}.p-low{background:rgba(67,233,123,0.2);color:var(--accent3);}
+.task-btns{display:flex;gap:5px;flex-shrink:0;}
 
-        .subject-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 28px rgba(20,30,80,0.08);
-        }
+.notice-box{background:rgba(255,107,107,0.07);border:1px solid rgba(255,107,107,0.22);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12px;color:#ff9a9a;}
+.info-box{background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.22);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#a8a3ff;}
 
-        .subject-card h3 {
-            color: #2c3e50;
-            margin-bottom: 12px;
-            font-size: 1.05rem;
-        }
-
-        .progress-bar {
-            background: #ecf0f1;
-            border-radius: 10px;
-            height: 10px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-
-        .progress {
-            background: #27ae60;
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.25s ease;
-        }
-
-        .timetable {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 18px 0;
-            background: white;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .timetable th, .timetable td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        .timetable th {
-            background: #34495e;
-            color: white;
-            font-weight: 600;
-        }
-
-        .timetable tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin: 16px 0;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            box-shadow: 0 6px 18px rgba(20,30,80,0.04);
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg,#2f8fd1,#3498db);
-            color: white;
-        }
-
-        .btn-success {
-            background: linear-gradient(90deg,#1ea44a,#27ae60);
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(90deg,#e04a3a,#e74c3c);
-            color: white;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 26px rgba(20,30,80,0.08);
-        }
-
-        .task-list {
-            list-style: none;
-            margin: 12px 0 22px 0;
-            padding: 0;
-        }
-
-        .task-item {
-            background: white;
-            padding: 14px 16px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border-left: 5px solid #3498db;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 6px 18px rgba(20,30,80,0.02);
-        }
-
-        .task-completed {
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-
-        .week-selector {
-            display: flex;
-            gap: 10px;
-            margin: 16px 0;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .week-btn {
-            padding: 9px 16px;
-            border: 2px solid #3498db;
-            background: white;
-            color: #3498db;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 600;
-        }
-
-        .week-btn.active {
-            background: #3498db;
-            color: white;
-            border-color: #2b79b1;
-            box-shadow: 0 8px 20px rgba(20,30,80,0.06);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin: 18px 0;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 14px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 6px 18px rgba(20,30,80,0.03);
-        }
-
-        .stat-number {
-            font-size: 1.9rem;
-            font-weight: 700;
-            color: #e74c3c;
-        }
-
-        input, select, textarea {
-            padding: 10px;
-            border: 1px solid #e6e6e6;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        textarea {
-            min-height: 64px;
-            resize: vertical;
-        }
-
-        .day-schedule {
-            margin-bottom: 20px;
-        }
-
-        .day-header {
-            background: #34495e;
-            color: white;
-            padding: 10px 14px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .day-progress {
-            font-size: 13px;
-            background: #27ae60;
-            padding: 6px 10px;
-            border-radius: 20px;
-            color: white;
-        }
-
-        .session-completed {
-            background: #d4edda !important;
-            color: #155724 !important;
-        }
-
-        .session-item {
-            transition: all 0.2s ease;
-        }
-
-        .session-item:hover {
-            transform: translateX(4px);
-        }
-
-        .today-highlight {
-            background: #fff8e6 !important;
-            border-left: 5px solid #ffc107 !important;
-            padding-left: 12px;
-            border-radius: 6px;
-        }
-
-        .daily-summary {
-            background: #e8f4fd;
-            padding: 16px;
-            border-radius: 10px;
-            margin: 16px 0;
-            border-left: 5px solid #3498db;
-        }
-
-        @media (max-width: 768px) {
-            .nav-tabs {
-                flex-direction: column;
-            }
-
-            .subject-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .controls {
-                flex-direction: column;
-            }
-
-            .week-selector {
-                justify-content: center;
-            }
-        }
-    </style>
+@media(max-width:600px){
+  .cycle-grid{grid-template-columns:repeat(4,1fr);}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <!-- Header with emoji -->
-            <h1>📘 Semester 6 Study Planner</h1>
-            <p id="currentDate">📅 December 18, 2025 - March 18, 2026 | ⏰ Study Time: 1:30 PM - 6:30 PM</p>
-        </div>
+<div class="container">
 
-        <!-- Navigation tabs with emojis -->
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
-            <button class="nav-tab" onclick="switchTab('timetable')">📅 Study Timetable</button>
-            <button class="nav-tab" onclick="switchTab('progress')">🧾 Daily Progress</button>
-            <button class="nav-tab" onclick="switchTab('tasks')">✅ Today's Tasks</button>
-        </div>
+  <div class="header">
+    <div class="header-eyebrow">Academic Year 2025–26</div>
+    <h1>📘 Semester 6 Study Planner</h1>
+    <div class="header-meta">
+      <div class="header-badge">📅 Study: 11 Mar – 1 Apr 2026</div>
+      <div class="header-badge">🕐 10–12 AM · 3–5 PM · 8–10 PM</div>
+      <div class="header-badge alert">🚨 Exams from 16 Apr 2026</div>
+    </div>
+  </div>
 
-        <!-- Dashboard -->
-        <div id="dashboard" class="tab-content active">
-            <h2>📊 Study Dashboard</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="daysRemaining">91</div>
-                    <div>📆 Days Remaining</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="completionRate">0%</div>
-                    <div>📈 Overall Completion</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="tasksCompleted">0</div>
-                    <div>✅ Tasks Completed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="studyHours">0</div>
-                    <div>⏱️ Study Hours</div>
-                </div>
-            </div>
+  <div class="countdown-bar">
+    <div class="countdown-item"><div class="countdown-num" id="cdDays">-</div><div class="countdown-label">Days</div></div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-item"><div class="countdown-num" id="cdHrs">-</div><div class="countdown-label">Hours</div></div>
+    <div class="countdown-sep">:</div>
+    <div class="countdown-item"><div class="countdown-num" id="cdMin">-</div><div class="countdown-label">Mins</div></div>
+    <span style="color:var(--text2);font-size:12px;margin-left:6px;">until exams<br><span style="font-size:11px;color:var(--text3)">(16 Apr 2026)</span></span>
+    <div class="countdown-note">📋 Exam timetable to be shared soon</div>
+  </div>
 
-            <h3>📚 Subjects Overview</h3>
-            <div class="subject-grid">
-                <div class="subject-card">
-                    <h3>🧩 Software Quality Assurance</h3>
-                    <div>Progress: <span id="sqProgress">0%</span></div>
-                    <div class="progress-bar">
-                        <div class="progress" id="sqProgressBar" style="width: 0%"></div>
-                    </div>
-                </div>
-                <div class="subject-card">
-                    <h3>🔒 Information Security</h3>
-                    <div>Progress: <span id="isProgress">0%</span></div>
-                    <div class="progress-bar">
-                        <div class="progress" id="isProgressBar" style="width: 0%"></div>
-                    </div>
-                </div>
-                <div class="subject-card">
-                    <h3>📊 Business Intelligence &amp; Data Analytics</h3>
-                    <div>Progress: <span id="bidaProgress">0%</span></div>
-                    <div class="progress-bar">
-                        <div class="progress" id="bidaProgressBar" style="width: 0%"></div>
-                    </div>
-                </div>
-                <div class="subject-card">
-                    <h3>🗺️ Fundamentals of GIS</h3>
-                    <div>Progress: <span id="fgisProgress">0%</span></div>
-                    <div class="progress-bar">
-                        <div class="progress" id="fgisProgressBar" style="width: 0%"></div>
-                    </div>
-                </div>
-                <div class="subject-card">
-                    <h3>💻 IT Infrastructure Management</h3>
-                    <div>Progress: <span id="itimProgress">0%</span></div>
-                    <div class="progress-bar">
-                        <div class="progress" id="itimProgressBar" style="width: 0%"></div>
-                    </div>
-                </div>
-            </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+    <button class="nav-tab" onclick="switchTab('timetable',this)">📅 Timetable</button>
+    <button class="nav-tab" onclick="switchTab('progress',this)">🧾 Log Progress</button>
+    <button class="nav-tab" onclick="switchTab('tasks',this)">✅ Tasks</button>
+  </div>
 
-            <div class="daily-summary">
-                <h3>📊 Today's Progress Summary</h3>
-                <p id="todaySummary">No sessions completed today yet.</p>
-                <div class="controls">
-                    <button class="btn btn-success" onclick="markTodayComplete()">🎉 Mark Today as Complete</button>
-                    <button class="btn btn-primary" onclick="switchTab('progress')">📝 Log Today's Sessions</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Timetable -->
-        <div id="timetable" class="tab-content">
-            <h2>📅 13-Week Study Timetable</h2>
-            <div class="week-selector">
-                <button class="week-btn active" onclick="showWeek(1)">Week 1</button>
-                <button class="week-btn" onclick="showWeek(2)">Week 2</button>
-                <button class="week-btn" onclick="showWeek(3)">Week 3</button>
-                <button class="week-btn" onclick="showWeek(4)">Week 4</button>
-                <button class="week-btn" onclick="showWeek(5)">Week 5</button>
-                <button class="week-btn" onclick="showWeek(6)">Week 6</button>
-                <button class="week-btn" onclick="showWeek(7)">Week 7</button>
-                <button class="week-btn" onclick="showWeek(8)">Week 8</button>
-                <button class="week-btn" onclick="showWeek(9)">Week 9</button>
-                <button class="week-btn" onclick="showWeek(10)">Week 10</button>
-                <button class="week-btn" onclick="showWeek(11)">Week 11</button>
-                <button class="week-btn" onclick="showWeek(12)">Week 12</button>
-                <button class="week-btn" onclick="showWeek(13)">Week 13</button>
-            </div>
-
-            <div id="weekContent">
-                <!-- Week content will be loaded here -->
-            </div>
-        </div>
-
-        <!-- Progress -->
-        <div id="progress" class="tab-content">
-            <h2>🧾 Daily Progress Tracking</h2>
-            <div class="daily-summary">
-                <h3>🎯 Today's Goal: <span id="todayDate"></span></h3>
-                <p>Complete your study sessions and mark them as done. Progress auto-saves! ⏳</p>
-            </div>
-
-            <h3>📝 Log Today's Study Session</h3>
-            <div class="controls">
-                <input type="time" id="sessionTime" value="13:30">
-                <select id="subjectSelect">
-                    <option value="SQA">🧩 Software Quality Assurance</option>
-                    <option value="IS">🔒 Information Security</option>
-                    <option value="BIDA">📊 Business Intelligence & Data Analytics</option>
-                    <option value="FGIS">🗺️ Fundamentals of GIS</option>
-                    <option value="ITIM">💻 IT Infrastructure Management</option>
-                </select>
-                <input type="number" id="hoursStudied" placeholder="Hours" min="0.5" max="10" step="0.5" value="1">
-                <textarea id="sessionNotes" placeholder="What did you study?"></textarea>
-                <button class="btn btn-success" onclick="logStudySession()">✅ Log Session</button>
-            </div>
-
-            <h3>🕒 Today's Completed Sessions</h3>
-            <div id="todaySessions">
-                <!-- Today's sessions will be listed here -->
-            </div>
-
-            <h3>📜 Recent Study History</h3>
-            <div id="sessionHistory">
-                <!-- Study sessions will be listed here -->
-            </div>
-        </div>
-
-        <!-- Tasks -->
-        <div id="tasks" class="tab-content">
-            <h2>✅ Today's Tasks</h2>
-            <div class="controls">
-                <input type="text" id="newTask" placeholder="Enter new task...">
-                <select id="taskSubject">
-                    <option value="General">General</option>
-                    <option value="SQA">SQA</option>
-                    <option value="IS">Information Security</option>
-                    <option value="BIDA">BIDA</option>
-                    <option value="FGIS">FGIS</option>
-                    <option value="ITIM">ITIM</option>
-                </select>
-                <select id="taskPriority">
-                    <option value="low">🟢 Low Priority</option>
-                    <option value="medium">🟡 Medium Priority</option>
-                    <option value="high">🔴 High Priority</option>
-                </select>
-                <button class="btn btn-success" onclick="addTask()">➕ Add Task</button>
-            </div>
-
-            <div id="todayTasks">
-                <!-- Today's tasks will be listed here -->
-            </div>
-
-            <h3>🗓️ Upcoming Tasks</h3>
-            <ul class="task-list" id="taskList">
-                <!-- Other tasks will be listed here -->
-            </ul>
-        </div>
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="tab-content active">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="stStudyLeft">22</div><div class="stat-label">Study Days Left</div></div>
+      <div class="stat-card"><div class="stat-num" id="stExamLeft">-</div><div class="stat-label">Days to Exam</div></div>
+      <div class="stat-card"><div class="stat-num" id="stTasks">0</div><div class="stat-label">Tasks Done Today</div></div>
+      <div class="stat-card"><div class="stat-num" id="stHours">0</div><div class="stat-label">Total Hours Logged</div></div>
     </div>
 
-    <script>
-        // ========== HAR WEEK KA ALAG TIMETABLE ==========
-        let studyData = {
-            subjects: {
-                SQA: { progress: 0, completed: false, sessions: [] },
-                IS: { progress: 0, completed: false, sessions: [] },
-                BIDA: { progress: 0, completed: false, sessions: [] },
-                FGIS: { progress: 0, completed: false, sessions: [] },
-                ITIM: { progress: 0, completed: false, sessions: [] }
-            },
-            dailyProgress: {},
-            tasks: [],
-            currentWeek: 1,
-            lastUpdated: new Date().toISOString().split('T')[0]
-        };
-
-        function getToday() {
-            return new Date().toISOString().split('T')[0];
-        }
-
-        function getCurrentTime() {
-            return new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-        }
-
-        function loadData() {
-            const saved = localStorage.getItem('semester6StudyPlanner');
-            if (saved) {
-                const data = JSON.parse(saved);
-                const today = getToday();
-                if (data.lastUpdated !== today) {
-                    studyData.subjects = data.subjects;
-                    studyData.tasks = data.tasks.filter(task => !task.completed);
-                    studyData.dailyProgress[today] = { sessions: [], tasks: [] };
-                } else {
-                    studyData = data;
-                }
-                studyData.lastUpdated = today;
-            } else {
-                studyData.dailyProgress[getToday()] = { sessions: [], tasks: [] };
-            }
-
-            updateDashboard();
-            updateProgressBars();
-            showWeek(1);
-            loadTodaySessions();
-            loadSessionHistory();
-            loadTodayTasks();
-            updateTodayDate();
-            saveData();
-        }
-
-        function saveData() {
-            studyData.lastUpdated = getToday();
-            localStorage.setItem('semester6StudyPlanner', JSON.stringify(studyData));
-        }
-
-        // Autosave
-        setInterval(saveData, 30000);
-
-        function updateTodayDate() {
-            const today = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('todayDate').textContent = today.toLocaleDateString('en-US', options);
-            document.getElementById('sessionTime').value = getCurrentTime().substring(0, 5);
-        }
-
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.getElementById(tabName).classList.add('active');
-            // preserve event.target usage as in original
-            try { event.target.classList.add('active'); } catch(e){/* ignore */ }
-
-            if (tabName === 'progress') {
-                updateTodayDate();
-            }
-        }
-
-        function updateDashboard() {
-            const startDate = new Date('2025-12-18');
-            const endDate = new Date('2026-03-18');
-            const today = new Date();
-
-            const totalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-            const daysRemaining = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
-
-            document.getElementById('daysRemaining').textContent = Math.max(0, daysRemaining);
-
-            const totalSubjects = 5;
-            const completedSubjects = Object.values(studyData.subjects).filter(subj => subj.completed).length;
-            const completionRate = Math.round((completedSubjects / totalSubjects) * 100);
-            document.getElementById('completionRate').textContent = completionRate + '%';
-
-            const todayTasks = studyData.dailyProgress[getToday()]?.tasks || [];
-            const completedToday = todayTasks.filter(task => task.completed).length;
-            document.getElementById('tasksCompleted').textContent = completedToday;
-
-            let totalHours = 0;
-            Object.values(studyData.subjects).forEach(subject => {
-                subject.sessions.forEach(session => {
-                    totalHours += session.hours;
-                });
-            });
-            document.getElementById('studyHours').textContent = totalHours.toFixed(1);
-
-            updateTodaySummary();
-        }
-
-        function updateTodaySummary() {
-            const today = getToday();
-            const todaySessions = studyData.dailyProgress[today]?.sessions || [];
-            const todayTasks = studyData.dailyProgress[today]?.tasks || [];
-
-            const completedSessions = todaySessions.length;
-            const completedTasks = todayTasks.filter(task => task.completed).length;
-
-            let summary = '';
-            if (completedSessions === 0 && completedTasks === 0) {
-                summary = 'No sessions completed today yet. 📚';
-            } else {
-                summary = `Today: ${completedSessions} study sessions completed, ${completedTasks} tasks done. ✅`;
-            }
-
-            document.getElementById('todaySummary').textContent = summary;
-        }
-
-        function updateProgressBars() {
-            Object.keys(studyData.subjects).forEach(subject => {
-                const progress = studyData.subjects[subject].progress;
-                const id = subject.toLowerCase() + 'Progress';
-                const bar = subject.toLowerCase() + 'ProgressBar';
-                if (document.getElementById(id)) {
-                    document.getElementById(id).textContent = progress + '%';
-                }
-                if (document.getElementById(bar)) {
-                    document.getElementById(bar).style.width = progress + '%';
-                }
-            });
-        }
-
-        function showWeek(weekNumber) {
-            studyData.currentWeek = weekNumber;
-            document.querySelectorAll('.week-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            try { 
-                if (event && event.target) {
-                    event.target.classList.add('active');
-                }
-            } catch(e){/* ignore */ }
-
-            const weekContent = document.getElementById('weekContent');
-            weekContent.innerHTML = generateWeekContent(weekNumber);
-        }
-
-        function generateWeekContent(week) {
-            const weeks = {
-                1: {
-                    title: "📘 Week 1: Foundation & Setup (Dec 18-24, 2025)",
-                    focus: "Core Concepts & Environment Setup",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-2:30 PM", activity: "SQA Theory", topic: "Units I & II - Quality & Testing Fundamentals" },
-                            { time: "2:30-3:30 PM", activity: "SQA Practice", topic: "Testing Principles & V-Model" },
-                            { time: "3:30-4:30 PM", activity: "IS Practical", topic: "Lab Environment Setup" },
-                            { time: "4:30-5:30 PM", activity: "IS Theory", topic: "Unit I - Info Sec Overview" },
-                            { time: "5:30-6:30 PM", activity: "BIDA Theory", topic: "Unit I - BI & DSS" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-2:30 PM", activity: "IS Theory", topic: "Risk Analysis & CIA Triad" },
-                            { time: "2:30-3:30 PM", activity: "IS Practice", topic: "Security Methodology" },
-                            { time: "3:30-4:30 PM", activity: "BIDA Practical", topic: "Python/R Environment Setup" },
-                            { time: "4:30-5:30 PM", activity: "BIDA Theory", topic: "Data/Information/Knowledge" },
-                            { time: "5:30-6:30 PM", activity: "FGIS Theory", topic: "Unit I - GIS Introduction" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-2:30 PM", activity: "BIDA Theory", topic: "Mathematical Models" },
-                            { time: "2:30-3:30 PM", activity: "BIDA Practice", topic: "Decision Support Systems" },
-                            { time: "3:30-4:30 PM", activity: "FGIS Practical", topic: "QGIS Installation & Setup" },
-                            { time: "4:30-5:30 PM", activity: "FGIS Theory", topic: "Geographic Phenomena" },
-                            { time: "5:30-6:30 PM", activity: "ITIM Theory", topic: "Unit I - ITIL 4 Framework" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-2:30 PM", activity: "FGIS Theory", topic: "Data Models & Representations" },
-                            { time: "2:30-3:30 PM", activity: "FGIS Practice", topic: "Raster vs Vector Data" },
-                            { time: "3:30-4:30 PM", activity: "Android Practical", topic: "Android Studio Setup" },
-                            { time: "4:30-5:30 PM", activity: "ITIM Theory", topic: "Service Value System" },
-                            { time: "5:30-6:30 PM", activity: "SQA Theory", topic: "Revision - Units I & II" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-2:30 PM", activity: "ITIM Theory", topic: "Four Dimensions & Guiding Principles" },
-                            { time: "2:30-3:30 PM", activity: "ITIM Practice", topic: "Service Value Chain" },
-                            { time: "3:30-4:30 PM", activity: "Mixed Practical", topic: "All Subjects - Tool Setup" },
-                            { time: "4:30-5:30 PM", activity: "Weekly Revision", topic: "All Subjects Week 1" },
-                            { time: "5:30-6:30 PM", activity: "Problem Solving", topic: "Identify Difficult Topics" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-3:00 PM", activity: "Weekly Review", topic: "All Theory Topics Week 1" },
-                            { time: "3:15-4:45 PM", activity: "Practical Session", topic: "Complete Pending Labs" },
-                            { time: "5:00-6:30 PM", activity: "Planning", topic: "Prepare Week 2 Schedule" }
-                        ]
-                    }
-                },
-                2: {
-                    title: "📗 Week 2: Technical Foundations (Dec 25-31, 2025)",
-                    focus: "Testing Techniques, Encryption & Data Models",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-2:30 PM", activity: "SQA Theory", topic: "Unit III - Boundary Value Testing" },
-                            { time: "2:30-3:30 PM", activity: "SQA Practice", topic: "Equivalence Class Testing" },
-                            { time: "3:30-4:30 PM", activity: "IS Practical", topic: "Router Config - OSPF, NTP" },
-                            { time: "4:30-5:30 PM", activity: "IS Theory", topic: "Unit II - Authentication & Encryption" },
-                            { time: "5:30-6:30 PM", activity: "BIDA Practical", topic: "Excel Pivot Tables" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-2:30 PM", activity: "IS Theory", topic: "Symmetric & Asymmetric Crypto" },
-                            { time: "2:30-3:30 PM", activity: "IS Practice", topic: "Public Key Infrastructure" },
-                            { time: "3:30-4:30 PM", activity: "BIDA Practical", topic: "Cube Analysis in Excel" },
-                            { time: "4:30-5:30 PM", activity: "BIDA Theory", topic: "Unit II - Data Mining Process" },
-                            { time: "5:30-6:30 PM", activity: "FGIS Theory", topic: "Unit II - GIS Architecture" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-2:30 PM", activity: "BIDA Theory", topic: "Data Preparation & Validation" },
-                            { time: "2:30-3:30 PM", activity: "BIDA Practice", topic: "Data Transformation" },
-                            { time: "3:30-4:30 PM", activity: "FGIS Practical", topic: "Creating Vector Data" },
-                            { time: "4:30-5:30 PM", activity: "FGIS Theory", topic: "Spatial Data Infrastructure" },
-                            { time: "5:30-6:30 PM", activity: "ITIM Theory", topic: "Unit II - Management Practices" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-2:30 PM", activity: "FGIS Theory", topic: "Database Management in GIS" },
-                            { time: "2:30-3:30 PM", activity: "FGIS Practice", topic: "Managing Raster Data" },
-                            { time: "3:30-4:30 PM", activity: "Android Practical", topic: "Activities & Fragments" },
-                            { time: "4:30-5:30 PM", activity: "ITIM Theory", topic: "Service Management Practices" },
-                            { time: "5:30-6:30 PM", activity: "SQA Theory", topic: "Decision Table Testing" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-2:30 PM", activity: "ITIM Theory", topic: "Technical Management Practices" },
-                            { time: "2:30-3:30 PM", activity: "ITIM Practice", topic: "General Management Practices" },
-                            { time: "3:30-4:30 PM", activity: "Mixed Practical", topic: "Week 2 Lab Completion" },
-                            { time: "4:30-5:30 PM", activity: "Weekly Revision", topic: "All Subjects Week 2" },
-                            { time: "5:30-6:30 PM", activity: "Problem Solving", topic: "Practice Numerical Problems" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-3:00 PM", activity: "Weekly Review", topic: "Theory & Practical Integration" },
-                            { time: "3:15-4:45 PM", activity: "Lab Session", topic: "Complete All Week 2 Experiments" },
-                            { time: "5:00-6:30 PM", activity: "Planning", topic: "Prepare Week 3 Schedule" }
-                        ]
-                    }
-                },
-                3: {
-                    title: "📙 Week 3: Security & Analysis (Jan 1-7, 2026)",
-                    focus: "Network Security, Classification & Spatial Referencing",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-2:30 PM", activity: "SQA Theory", topic: "Unit IV - Verification & Validation" },
-                            { time: "2:30-3:30 PM", activity: "SQA Practice", topic: "V-Model Implementation" },
-                            { time: "3:30-4:30 PM", activity: "IS Practical", topic: "AAA Authentication" },
-                            { time: "4:30-5:30 PM", activity: "IS Theory", topic: "Unit III - Network Security" },
-                            { time: "5:30-6:30 PM", activity: "BIDA Practical", topic: "Classification Algorithms" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-2:30 PM", activity: "IS Theory", topic: "Firewalls & Wireless Security" },
-                            { time: "2:30-3:30 PM", activity: "IS Practice", topic: "Network Hardening" },
-                            { time: "3:30-4:30 PM", activity: "BIDA Practical", topic: "Clustering Algorithms" },
-                            { time: "4:30-5:30 PM", activity: "BIDA Theory", topic: "Unit III - Bayesian Methods" },
-                            { time: "5:30-6:30 PM", activity: "FGIS Theory", topic: "Unit III - Spatial Referencing" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-2:30 PM", activity: "BIDA Theory", topic: "Neural Networks & SVM" },
-                            { time: "2:30-3:30 PM", activity: "BIDA Practice", topic: "Model Evaluation" },
-                            { time: "3:30-4:30 PM", activity: "FGIS Practical", topic: "Map Projections" },
-                            { time: "4:30-5:30 PM", activity: "FGIS Theory", topic: "GPS & Data Quality" },
-                            { time: "5:30-6:30 PM", activity: "ITIM Theory", topic: "Unit III - Stakeholder Value" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-2:30 PM", activity: "FGIS Theory", topic: "Coordinate Systems" },
-                            { time: "2:30-3:30 PM", activity: "FGIS Practice", topic: "Data Input Methods" },
-                            { time: "3:30-4:30 PM", activity: "Android Practical", topic: "Layouts & UI Elements" },
-                            { time: "4:30-5:30 PM", activity: "ITIM Theory", topic: "Customer Journey" },
-                            { time: "5:30-6:30 PM", activity: "SQA Theory", topic: "Path Testing & Data Flow" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-2:30 PM", activity: "ITIM Theory", topic: "Explore, Engage, Offer Steps" },
-                            { time: "2:30-3:30 PM", activity: "ITIM Practice", topic: "Agree & Onboard Processes" },
-                            { time: "3:30-4:30 PM", activity: "Mixed Practical", topic: "ACLs & Firewall Config" },
-                            { time: "4:30-5:30 PM", activity: "Weekly Revision", topic: "All Subjects Week 3" },
-                            { time: "5:30-6:30 PM", activity: "Case Studies", topic: "Real-world Applications" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-3:00 PM", activity: "Comprehensive Review", topic: "Weeks 1-3 Integration" },
-                            { time: "3:15-4:45 PM", activity: "Lab Completion", topic: "All Week 3 Experiments" },
-                            { time: "5:00-6:30 PM", activity: "Progress Assessment", topic: "Identify Weak Areas" }
-                        ]
-                    }
-                },
-                4: {
-                    title: "📕 Week 4: Advanced Applications (Jan 8-14, 2026)",
-                    focus: "Testing Tools, IDS/IPS & Spatial Analysis",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-2:30 PM", activity: "SQA Theory", topic: "Unit V - Testing Levels & Tools" },
-                            { time: "2:30-3:30 PM", activity: "SQA Practice", topic: "Test Tool Selection" },
-                            { time: "3:30-4:30 PM", activity: "IS Practical", topic: "Extended ACLs" },
-                            { time: "4:30-5:30 PM", activity: "IS Theory", topic: "Unit IV - IDS/IPS & SIEM" },
-                            { time: "5:30-6:30 PM", activity: "BIDA Practical", topic: "Linear Regression" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-2:30 PM", activity: "IS Theory", topic: "VoIP Security & OS Models" },
-                            { time: "2:30-3:30 PM", activity: "IS Practice", topic: "Operating System Security" },
-                            { time: "3:30-4:30 PM", activity: "BIDA Practical", topic: "Logistic Regression" },
-                            { time: "4:30-5:30 PM", activity: "BIDA Theory", topic: "Unit IV - MIS & Marketing Models" },
-                            { time: "5:30-6:30 PM", activity: "FGIS Theory", topic: "Unit IV - Spatial Analysis" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-2:30 PM", activity: "BIDA Theory", topic: "Logistics & Production Models" },
-                            { time: "2:30-3:30 PM", activity: "BIDA Practice", topic: "Revenue Management" },
-                            { time: "3:30-4:30 PM", activity: "FGIS Practical", topic: "Spatial Queries" },
-                            { time: "4:30-5:30 PM", activity: "FGIS Theory", topic: "Overlay Functions" },
-                            { time: "5:30-6:30 PM", activity: "ITIM Theory", topic: "Unit IV - Create, Deliver & Support" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-2:30 PM", activity: "FGIS Theory", topic: "Neighborhood Functions" },
-                            { time: "2:30-3:30 PM", activity: "FGIS Practice", topic: "Network Analysis" },
-                            { time: "3:30-4:30 PM", activity: "Android Practical", topic: "Menus & Dialogs" },
-                            { time: "4:30-5:30 PM", activity: "ITIM Theory", topic: "Shift-Left Approach" },
-                            { time: "5:30-6:30 PM", activity: "SQA Theory", topic: "Taxonomy of Testing Tools" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-2:30 PM", activity: "ITIM Theory", topic: "Value Streams" },
-                            { time: "2:30-3:30 PM", activity: "ITIM Practice", topic: "Change Enablement" },
-                            { time: "3:30-4:30 PM", activity: "Mixed Practical", topic: "Zone-Based Firewall" },
-                            { time: "4:30-5:30 PM", activity: "Weekly Revision", topic: "All Subjects Week 4" },
-                            { time: "5:30-6:30 PM", activity: "Tool Practice", topic: "QGIS & Testing Tools" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-3:00 PM", activity: "Mid-term Review", topic: "All Units 1-4" },
-                            { time: "3:15-4:45 PM", activity: "Advanced Labs", topic: "IOS IPS & Layer 2 Security" },
-                            { time: "5:00-6:30 PM", activity: "Progress Check", topic: "Halfway Point Assessment" }
-                        ]
-                    }
-                },
-                5: {
-                    title: "📒 Week 5: Completion & Buffer (Jan 15-21, 2026)",
-                    focus: "Complete Syllabus & Revision",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-2:30 PM", activity: "SQA Theory", topic: "Revision - All Units" },
-                            { time: "2:30-3:30 PM", activity: "SQA Practice", topic: "Complete Pending Topics" },
-                            { time: "3:30-4:30 PM", activity: "IS Practical", topic: "VLAN Security & VPN" },
-                            { time: "4:30-5:30 PM", activity: "IS Theory", topic: "Unit V - Virtualization & Cloud" },
-                            { time: "5:30-6:30 PM", activity: "BIDA Practical", topic: "Python/Pandas Analysis" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-2:30 PM", activity: "IS Theory", topic: "Cloud Security Aspects" },
-                            { time: "2:30-3:30 PM", activity: "IS Practice", topic: "Physical Security" },
-                            { time: "3:30-4:30 PM", activity: "BIDA Practical", topic: "Power BI Dashboards" },
-                            { time: "4:30-5:30 PM", activity: "BIDA Theory", topic: "Complete Pending Topics" },
-                            { time: "5:30-6:30 PM", activity: "FGIS Theory", topic: "Unit V - Data Visualization" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-2:30 PM", activity: "BIDA Theory", topic: "Organizational Culture & AI" },
-                            { time: "2:30-3:30 PM", activity: "BIDA Practice", topic: "Machine Learning Process" },
-                            { time: "3:30-4:30 PM", activity: "FGIS Practical", topic: "Advanced GIS Operations" },
-                            { time: "4:30-5:30 PM", activity: "FGIS Theory", topic: "Map Creation & Validation" },
-                            { time: "5:30-6:30 PM", activity: "ITIM Theory", topic: "Unit V - High-Velocity IT" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-2:30 PM", activity: "FGIS Theory", topic: "Complete Pending Topics" },
-                            { time: "2:30-3:30 PM", activity: "FGIS Practice", topic: "Batch Processing" },
-                            { time: "3:30-4:30 PM", activity: "Android Practical", topic: "SQLite & JSON" },
-                            { time: "4:30-5:30 PM", activity: "ITIM Theory", topic: "Continual Improvement" },
-                            { time: "5:30-6:30 PM", activity: "SQA Theory", topic: "Complete Pending Topics" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-2:30 PM", activity: "ITIM Theory", topic: "Complete Pending Topics" },
-                            { time: "2:30-3:30 PM", activity: "ITIM Practice", topic: "Case Studies" },
-                            { time: "3:30-4:30 PM", activity: "Mixed Practical", topic: "Complete All Pending Labs" },
-                            { time: "4:30-5:30 PM", activity: "Comprehensive Revision", topic: "All Subjects" },
-                            { time: "5:30-6:30 PM", activity: "Weak Areas Focus", topic: "Identify & Improve" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-3:00 PM", activity: "Full Syllabus Review", topic: "All 5 Subjects" },
-                            { time: "3:15-4:45 PM", activity: "Practical Revision", topic: "All Experiments" },
-                            { time: "5:00-6:30 PM", activity: "Phase 1 Completion", topic: "Celebrate Progress!" }
-                        ]
-                    }
-                },
-                6: {
-                    title: "📘 Week 6: Active Recall (Jan 22-28, 2026)",
-                    focus: "Revision & Problem Solving",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-3:00 PM", activity: "SQA Revision", topic: "All Units Quick Review" },
-                            { time: "3:15-4:45 PM", activity: "SQA Practice", topic: "Chapter-end Questions" },
-                            { time: "5:00-6:30 PM", activity: "Mixed Revision", topic: "Difficult Topics" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-3:00 PM", activity: "IS Revision", topic: "All Units Quick Review" },
-                            { time: "3:15-4:45 PM", activity: "IS Practice", topic: "Security Scenarios" },
-                            { time: "5:00-6:30 PM", activity: "Mixed Revision", topic: "Network Diagrams" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-3:00 PM", activity: "BIDA Revision", topic: "All Units Quick Review" },
-                            { time: "3:15-4:45 PM", activity: "BIDA Practice", topic: "Data Analysis Problems" },
-                            { time: "5:00-6:30 PM", activity: "Mixed Revision", topic: "Algorithm Practice" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-3:00 PM", activity: "FGIS Revision", topic: "All Units Quick Review" },
-                            { time: "3:15-4:45 PM", activity: "FGIS Practice", topic: "Spatial Analysis Problems" },
-                            { time: "5:00-6:30 PM", activity: "Mixed Revision", topic: "Map Concepts" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-3:00 PM", activity: "ITIM Revision", topic: "All Units Quick Review" },
-                            { time: "3:15-4:45 PM", activity: "ITIM Practice", topic: "Case Studies" },
-                            { time: "5:00-6:30 PM", activity: "Mixed Revision", topic: "Service Management" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-4:00 PM", activity: "Full Revision", topic: "All Subjects Integration" },
-                            { time: "4:15-5:30 PM", activity: "Problem Solving", topic: "Mixed Questions" },
-                            { time: "5:30-6:30 PM", activity: "Week Planning", topic: "Prepare for Week 7" }
-                        ]
-                    }
-                },
-                7: {
-                    title: "📗 Week 7: Past Papers (Jan 29-Feb 4, 2026)",
-                    focus: "Exam Pattern Practice",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-3:30 PM", activity: "SQA Past Papers", topic: "2 Previous Years" },
-                            { time: "3:45-5:00 PM", activity: "Paper Analysis", topic: "Identify Weak Areas" },
-                            { time: "5:15-6:30 PM", activity: "Revision", topic: "Weak Topics Focus" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-3:30 PM", activity: "IS Past Papers", topic: "2 Previous Years" },
-                            { time: "3:45-5:00 PM", activity: "Paper Analysis", topic: "Identify Weak Areas" },
-                            { time: "5:15-6:30 PM", activity: "Revision", topic: "Weak Topics Focus" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-3:30 PM", activity: "BIDA Past Papers", topic: "2 Previous Years" },
-                            { time: "3:45-5:00 PM", activity: "Paper Analysis", topic: "Identify Weak Areas" },
-                            { time: "5:15-6:30 PM", activity: "Revision", topic: "Weak Topics Focus" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-3:30 PM", activity: "FGIS Past Papers", topic: "2 Previous Years" },
-                            { time: "3:45-5:00 PM", activity: "Paper Analysis", topic: "Identify Weak Areas" },
-                            { time: "5:15-6:30 PM", activity: "Revision", topic: "Weak Topics Focus" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-3:30 PM", activity: "ITIM Past Papers", topic: "2 Previous Years" },
-                            { time: "3:45-5:00 PM", activity: "Paper Analysis", topic: "Identify Weak Areas" },
-                            { time: "5:15-6:30 PM", activity: "Revision", topic: "Weak Topics Focus" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-4:30 PM", activity: "Mixed Papers", topic: "All Subjects Combined" },
-                            { time: "4:45-6:30 PM", activity: "Final Analysis", topic: "Overall Performance Review" }
-                        ]
-                    }
-                },
-                8: {
-                    title: "🎯 Week 8: Final Preparation (Feb 5-11, 2026)",
-                    focus: "Mock Tests & Quick Revision",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-3:30 PM", activity: "Mock Test - SQA", topic: "Full Syllabus" },
-                            { time: "3:45-5:00 PM", activity: "Mock Test - IS", topic: "Full Syllabus" },
-                            { time: "5:15-6:30 PM", activity: "Test Analysis", topic: "Correct Mistakes" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-3:30 PM", activity: "Mock Test - FGIS", topic: "Full Syllabus" },
-                            { time: "3:45-5:00 PM", activity: "Mock Test - BIDA", topic: "Full Syllabus" },
-                            { time: "5:15-6:30 PM", activity: "Test Analysis", topic: "Correct Mistakes" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-3:30 PM", activity: "Mock Test - ITIM", topic: "Full Syllabus" },
-                            { time: "3:45-5:00 PM", activity: "Mixed Revision", topic: "All Subjects" },
-                            { time: "5:15-6:30 PM", activity: "Weak Areas", topic: "Final Improvement" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-6:30 PM", activity: "Full Revision", topic: "Formula & Diagrams" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-6:30 PM", activity: "Full Revision", topic: "Key Concepts & Definitions" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-4:00 PM", activity: "Final Mock Test", topic: "Complete 5 Subjects" },
-                            { time: "4:15-6:30 PM", activity: "Relax & Prepare", topic: "Exam Mindset" }
-                        ]
-                    }
-                },
-                9: {
-                    title: "📚 Week 9: Intensive Revision (Feb 12-18, 2026)",
-                    focus: "Comprehensive Review & Practice",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-3:00 PM", activity: "SQA Intensive", topic: "All Units Deep Revision" },
-                            { time: "3:15-4:45 PM", activity: "IS Intensive", topic: "All Units Deep Revision" },
-                            { time: "5:00-6:30 PM", activity: "Mixed Practice", topic: "Problem Solving" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-3:00 PM", activity: "BIDA Intensive", topic: "All Units Deep Revision" },
-                            { time: "3:15-4:45 PM", activity: "FGIS Intensive", topic: "All Units Deep Revision" },
-                            { time: "5:00-6:30 PM", activity: "Mixed Practice", topic: "Case Studies" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-3:00 PM", activity: "ITIM Intensive", topic: "All Units Deep Revision" },
-                            { time: "3:15-4:45 PM", activity: "SQA Practice", topic: "Advanced Testing Scenarios" },
-                            { time: "5:00-6:30 PM", activity: "Mixed Practice", topic: "Integrated Problems" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-3:00 PM", activity: "IS Practice", topic: "Security Implementation" },
-                            { time: "3:15-4:45 PM", activity: "BIDA Practice", topic: "Data Analysis Scenarios" },
-                            { time: "5:00-6:30 PM", activity: "Mixed Practice", topic: "Real-world Applications" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-3:00 PM", activity: "FGIS Practice", topic: "Spatial Analysis Problems" },
-                            { time: "3:15-4:45 PM", activity: "ITIM Practice", topic: "Service Management Cases" },
-                            { time: "5:00-6:30 PM", activity: "Comprehensive Review", topic: "All Subjects" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-4:00 PM", activity: "Full Mock Exam", topic: "All Subjects - 3 Hours" },
-                            { time: "4:15-6:30 PM", activity: "Performance Analysis", topic: "Identify Final Gaps" }
-                        ]
-                    }
-                },
-                10: {
-                    title: "🎓 Week 10: Final Touches (Feb 19-25, 2026)",
-                    focus: "Last-minute Revision & Confidence Building",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-3:00 PM", activity: "Quick Revision", topic: "SQA & IS Key Points" },
-                            { time: "3:15-4:45 PM", activity: "Quick Revision", topic: "BIDA & FGIS Key Points" },
-                            { time: "5:00-6:30 PM", activity: "Quick Revision", topic: "ITIM & Mixed Topics" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-3:00 PM", activity: "Formula Review", topic: "All Important Formulas" },
-                            { time: "3:15-4:45 PM", activity: "Diagram Practice", topic: "All Important Diagrams" },
-                            { time: "5:00-6:30 PM", activity: "Definition Practice", topic: "Key Terms & Concepts" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-3:00 PM", activity: "Last Mock Test", topic: "Final Assessment" },
-                            { time: "3:15-4:45 PM", activity: "Test Analysis", topic: "Final Corrections" },
-                            { time: "5:00-6:30 PM", activity: "Confidence Building", topic: "Positive Mindset" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-6:30 PM", activity: "Relaxed Revision", topic: "Light Review & Rest" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-6:30 PM", activity: "Final Preparation", topic: "Exam Strategy & Rest" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-3:00 PM", activity: "Final Review", topic: "Last-minute Tips" },
-                            { time: "3:15-4:00 PM", activity: "Planning", topic: "Exam Day Preparation" },
-                            { time: "4:00-6:30 PM", activity: "Relaxation", topic: "Mental Preparation" }
-                        ]
-                    }
-                },
-                11: {
-                    title: "📝 Week 11: Buffer & Revision (Feb 26-Mar 4, 2026)",
-                    focus: "Final Revision & Catch-up",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-3:00 PM", activity: "SQA Weak Areas", topic: "Focus on Difficult Topics" },
-                            { time: "3:15-4:45 PM", activity: "IS Weak Areas", topic: "Focus on Difficult Topics" },
-                            { time: "5:00-6:30 PM", activity: "Practice Problems", topic: "Selected Questions" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-3:00 PM", activity: "BIDA Weak Areas", topic: "Focus on Difficult Topics" },
-                            { time: "3:15-4:45 PM", activity: "FGIS Weak Areas", topic: "Focus on Difficult Topics" },
-                            { time: "5:00-6:30 PM", activity: "Practice Problems", topic: "Selected Questions" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-3:00 PM", activity: "ITIM Weak Areas", topic: "Focus on Difficult Topics" },
-                            { time: "3:15-4:45 PM", activity: "Mixed Revision", topic: "All Subjects Integration" },
-                            { time: "5:00-6:30 PM", activity: "Problem Solving", topic: "Complex Scenarios" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-6:30 PM", activity: "Full Mock Test", topic: "Complete Syllabus Test" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-3:00 PM", activity: "Test Analysis", topic: "Identify Remaining Gaps" },
-                            { time: "3:15-6:30 PM", activity: "Targeted Revision", topic: "Specific Topic Focus" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-4:00 PM", activity: "Quick Revision", topic: "All Subjects - Rapid Review" },
-                            { time: "4:15-6:30 PM", activity: "Relaxation", topic: "Mental & Physical Prep" }
-                        ]
-                    }
-                },
-                12: {
-                    title: "🧘 Week 12: Pre-Exam Week (Mar 5-11, 2026)",
-                    focus: "Light Revision & Mental Preparation",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-3:00 PM", activity: "SQA Summary", topic: "Key Concepts Only" },
-                            { time: "3:15-4:45 PM", activity: "IS Summary", topic: "Key Concepts Only" },
-                            { time: "5:00-6:30 PM", activity: "Light Practice", topic: "Easy Questions" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-3:00 PM", activity: "BIDA Summary", topic: "Key Concepts Only" },
-                            { time: "3:15-4:45 PM", activity: "FGIS Summary", topic: "Key Concepts Only" },
-                            { time: "5:00-6:30 PM", activity: "Light Practice", topic: "Easy Questions" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-3:00 PM", activity: "ITIM Summary", topic: "Key Concepts Only" },
-                            { time: "3:15-4:45 PM", activity: "Mixed Summary", topic: "Important Formulas" },
-                            { time: "5:00-6:30 PM", activity: "Revision", topic: "Confidence Building" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-4:30 PM", activity: "Final Quick Test", topic: "Timed Practice" },
-                            { time: "4:45-6:30 PM", activity: "Analysis", topic: "Final Adjustments" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-6:30 PM", activity: "Complete Rest", topic: "Relax & Recharge" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-3:00 PM", activity: "Final Tips", topic: "Exam Strategy Review" },
-                            { time: "3:15-6:30 PM", activity: "Preparation", topic: "Exam Day Planning" }
-                        ]
-                    }
-                },
-                13: {
-                    title: "🏆 Week 13: Exam Week (Mar 12-18, 2026)",
-                    focus: "Exams & Final Preparation",
-                    dailySchedule: {
-                        "Monday": [
-                            { time: "1:30-3:00 PM", activity: "Subject 1 Revision", topic: "Last-minute Review" },
-                            { time: "3:15-4:45 PM", activity: "Subject 2 Revision", topic: "Last-minute Review" },
-                            { time: "5:00-6:30 PM", activity: "Relaxation", topic: "Mental Preparation" }
-                        ],
-                        "Tuesday": [
-                            { time: "1:30-3:00 PM", activity: "Subject 3 Revision", topic: "Last-minute Review" },
-                            { time: "3:15-4:45 PM", activity: "Subject 4 Revision", topic: "Last-minute Review" },
-                            { time: "5:00-6:30 PM", activity: "Relaxation", topic: "Mental Preparation" }
-                        ],
-                        "Wednesday": [
-                            { time: "1:30-3:00 PM", activity: "Subject 5 Revision", topic: "Last-minute Review" },
-                            { time: "3:15-4:45 PM", activity: "Mixed Revision", topic: "Important Topics" },
-                            { time: "5:00-6:30 PM", activity: "Final Preparation", topic: "Exam Mindset" }
-                        ],
-                        "Thursday": [
-                            { time: "1:30-4:30 PM", activity: "Rest & Preparation", topic: "Physical & Mental Rest" },
-                            { time: "4:45-6:30 PM", activity: "Light Review", topic: "Key Points Only" }
-                        ],
-                        "Friday": [
-                            { time: "1:30-6:30 PM", activity: "Exam Day", topic: "Give Your Best!" }
-                        ],
-                        "Saturday": [
-                            { time: "1:30-3:00 PM", activity: "Celebration", topic: "Completion of Syllabus" },
-                            { time: "3:15-6:30 PM", activity: "Planning", topic: "Next Steps & Future" }
-                        ]
-                    }
-                }
-            };
-
-            const weekData = weeks[week] || weeks[1];
-            const today = new Date().getDay();
-            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const todayName = dayNames[today];
-
-            let html = `
-                <h3>${weekData.title}</h3>
-                <p><strong>🎯 Focus:</strong> ${weekData.focus}</p>
-            `;
-
-            Object.keys(weekData.dailySchedule).forEach(day => {
-                const isToday = day === todayName;
-                const dayClass = isToday ? 'today-highlight' : '';
-                const todaySessions = studyData.dailyProgress[getToday()]?.sessions || [];
-                const dayCompletedSessions = todaySessions.filter(session => session.day === day).length;
-                const totalDaySessions = weekData.dailySchedule[day].length;
-
-                html += `
-                    <div class="day-schedule ${dayClass}">
-                        <div class="day-header">
-                            <span>${day} ${isToday ? '📍 Today' : ''}</span>
-                            <span class="day-progress">${dayCompletedSessions}/${totalDaySessions} sessions</span>
-                        </div>
-                        <table class="timetable">
-                            <thead>
-                                <tr>
-                                    <th>Time</th>
-                                    <th>Activity</th>
-                                    <th>Topic/Focus</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${weekData.dailySchedule[day].map(session => {
-                                    const sessionCompleted = todaySessions.some(s =>
-                                        s.day === day && s.time === session.time && s.activity === session.activity
-                                    );
-                                    const sessionClass = sessionCompleted ? 'session-completed' : '';
-                                    return `
-                                        <tr class="session-item ${sessionClass}">
-                                            <td>${session.time}</td>
-                                            <td>${session.activity}</td>
-                                            <td>${session.topic}</td>
-                                            <td>
-                                                <input type="checkbox" ${sessionCompleted ? 'checked' : ''}
-                                                    onchange="toggleSessionCompletion('${day}', '${session.time}', '${session.activity}', '${session.topic}')">
-                                                ${sessionCompleted ? '✅ Completed' : 'Mark Complete'}
-                                            </td>
-                                        </tr>
-                                    `;
-                                }).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            });
-
-            return html;
-        }
-
-        function toggleSessionCompletion(day, time, activity, topic) {
-            const today = getToday();
-            if (!studyData.dailyProgress[today]) {
-                studyData.dailyProgress[today] = { sessions: [], tasks: [] };
-            }
-
-            const existingSessionIndex = studyData.dailyProgress[today].sessions.findIndex(s =>
-                s.day === day && s.time === time && s.activity === activity
-            );
-
-            if (existingSessionIndex > -1) {
-                studyData.dailyProgress[today].sessions.splice(existingSessionIndex, 1);
-            } else {
-                studyData.dailyProgress[today].sessions.push({
-                    day,
-                    time,
-                    activity,
-                    topic,
-                    completedAt: new Date().toISOString()
-                });
-            }
-
-            saveData();
-            showWeek(studyData.currentWeek);
-            updateDashboard();
-        }
-
-        function logStudySession() {
-            const time = document.getElementById('sessionTime').value;
-            const subject = document.getElementById('subjectSelect').value;
-            const hours = parseFloat(document.getElementById('hoursStudied').value);
-            const notes = document.getElementById('sessionNotes').value;
-
-            if (!time || !subject || !hours) {
-                alert('⚠️ Please fill all required fields');
-                return;
-            }
-
-            const session = {
-                subject,
-                hours,
-                notes,
-                time,
-                date: getToday(),
-                timestamp: new Date().toISOString()
-            };
-
-            if (!studyData.subjects[subject].sessions) {
-                studyData.subjects[subject].sessions = [];
-            }
-            studyData.subjects[subject].sessions.push(session);
-
-            studyData.subjects[subject].progress = Math.min(100, studyData.subjects[subject].progress + 5);
-
-            const today = getToday();
-            if (!studyData.dailyProgress[today]) {
-                studyData.dailyProgress[today] = { sessions: [], tasks: [] };
-            }
-            studyData.dailyProgress[today].sessions.push(session);
-
-            saveData();
-            loadTodaySessions();
-            updateProgressBars();
-            updateDashboard();
-
-            document.getElementById('sessionNotes').value = '';
-            document.getElementById('sessionTime').value = getCurrentTime().substring(0, 5);
-
-            alert('🎉 Study session logged successfully!');
-        }
-
-        function loadTodaySessions() {
-            const today = getToday();
-            const todaySessions = studyData.dailyProgress[today]?.sessions || [];
-            const container = document.getElementById('todaySessions');
-
-            if (todaySessions.length === 0) {
-                container.innerHTML = '<p>No sessions completed today yet. 📚</p>';
-                return;
-            }
-
-            container.innerHTML = todaySessions.map(session => `
-                <div class="task-item session-completed">
-                    <div>
-                        <strong>${session.time} - ${session.subject}</strong> (${session.hours} hours)
-                        <br><small>${session.notes}</small>
-                    </div>
-                    <button class="btn btn-danger" onclick="removeSession('${session.timestamp}')">🗑️ Remove</button>
-                </div>
-            `).join('');
-        }
-
-        function loadSessionHistory() {
-            const container = document.getElementById('sessionHistory');
-            let allSessions = [];
-
-            Object.values(studyData.dailyProgress).forEach(day => {
-                allSessions = allSessions.concat(day.sessions);
-            });
-
-            allSessions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-            if (allSessions.length === 0) {
-                container.innerHTML = '<p>No study sessions recorded yet. 🕮</p>';
-                return;
-            }
-
-            container.innerHTML = allSessions.slice(0, 10).map(session => `
-                <div class="task-item">
-                    <div>
-                        <strong>${session.date} ${session.time} - ${session.subject}</strong> (${session.hours} hours)
-                        <br><small>${session.notes}</small>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function removeSession(timestamp) {
-            const today = getToday();
-            if (studyData.dailyProgress[today]) {
-                studyData.dailyProgress[today].sessions = studyData.dailyProgress[today].sessions.filter(
-                    session => session.timestamp !== timestamp
-                );
-            }
-            saveData();
-            loadTodaySessions();
-            updateDashboard();
-            alert('🗑️ Session removed');
-        }
-
-        function addTask() {
-            const taskText = document.getElementById('newTask').value;
-            const subject = document.getElementById('taskSubject').value;
-            const priority = document.getElementById('taskPriority').value;
-
-            if (!taskText) {
-                alert('⚠️ Please enter a task');
-                return;
-            }
-
-            const task = {
-                id: Date.now(),
-                text: taskText,
-                subject: subject,
-                priority: priority,
-                completed: false,
-                date: getToday(),
-                createdAt: new Date().toISOString()
-            };
-
-            studyData.tasks.push(task);
-
-            const today = getToday();
-            if (!studyData.dailyProgress[today]) {
-                studyData.dailyProgress[today] = { sessions: [], tasks: [] };
-            }
-            studyData.dailyProgress[today].tasks.push(task);
-
-            saveData();
-            loadTodayTasks();
-            document.getElementById('newTask').value = '';
-            alert('✅ Task added');
-        }
-
-        function loadTodayTasks() {
-            const today = getToday();
-            const todayTasks = studyData.dailyProgress[today]?.tasks || [];
-            const container = document.getElementById('todayTasks');
-
-            if (todayTasks.length === 0) {
-                container.innerHTML = '<p>No tasks for today. Add some tasks to get started! 📝</p>';
-                return;
-            }
-
-            container.innerHTML = todayTasks.map(task => `
-                <li class="task-item ${task.completed ? 'task-completed' : ''}">
-                    <div>
-                        <strong>${task.subject}</strong>: ${task.text}
-                        <span style="color: ${task.priority === 'high' ? '#e74c3c' : task.priority === 'medium' ? '#f39c12' : '#27ae60'}; margin-left: 10px;">
-                            ${task.priority.toUpperCase()}
-                        </span>
-                    </div>
-                    <div>
-                        <button class="btn btn-success" onclick="toggleTask(${task.id})">
-                            ${task.completed ? '↩️ Undo' : '✅ Complete'}
-                        </button>
-                        <button class="btn btn-danger" onclick="deleteTask(${task.id})">🗑️ Delete</button>
-                    </div>
-                </li>
-            `).join('');
-        }
-
-        function toggleTask(taskId) {
-            const task = studyData.tasks.find(t => t.id === taskId);
-            if (task) {
-                task.completed = !task.completed;
-
-                const today = getToday();
-                if (studyData.dailyProgress[today]) {
-                    const todayTask = studyData.dailyProgress[today].tasks.find(t => t.id === taskId);
-                    if (todayTask) {
-                        todayTask.completed = task.completed;
-                    }
-                }
-
-                saveData();
-                loadTodayTasks();
-                updateDashboard();
-            }
-        }
-
-        function deleteTask(taskId) {
-            studyData.tasks = studyData.tasks.filter(t => t.id !== taskId);
-
-            const today = getToday();
-            if (studyData.dailyProgress[today]) {
-                studyData.dailyProgress[today].tasks = studyData.dailyProgress[today].tasks.filter(t => t.id !== taskId);
-            }
-
-            saveData();
-            loadTodayTasks();
-            updateDashboard();
-            alert('🗑️ Task deleted');
-        }
-
-        function markTodayComplete() {
-            if (confirm('🎉 Mark today as complete? This will celebrate your progress!')) {
-                const today = getToday();
-                if (studyData.dailyProgress[today]) {
-                    studyData.dailyProgress[today].completed = true;
-                    saveData();
-                    alert('🎉 Great job! Today marked as complete. Keep up the good work!');
-                    updateDashboard();
-                }
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            loadData();
-            setInterval(saveData, 60000);
-        });
-    </script>
+    <div class="notice-box">🚨 <strong>Exam Postponed!</strong> New start: <strong>16 April 2026</strong>. Timetable coming soon. Practicals are complete — no lab sessions.</div>
+    <div class="info-box" id="todayCycleBox">📍 Loading today's schedule...</div>
+
+    <div class="cycle-info">
+      <h3>🔄 7-Day Study Cycle (repeats every week)</h3>
+      <div class="cycle-grid" id="cycleGrid"></div>
+      <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--text2);">
+        <span><span class="subj-tag" style="background:rgba(108,99,255,0.2);color:var(--SQA)">SQA</span> Software Quality Assurance</span>
+        <span><span class="subj-tag" style="background:rgba(255,107,107,0.2);color:var(--IS)">IS</span> Information Security</span>
+        <span><span class="subj-tag" style="background:rgba(67,233,123,0.2);color:var(--BIDA)">BIDA</span> Business Intelligence</span>
+        <span><span class="subj-tag" style="background:rgba(249,202,36,0.2);color:var(--FGIS)">FGIS</span> Fundamentals of GIS</span>
+        <span><span class="subj-tag" style="background:rgba(56,201,240,0.2);color:var(--ITIM)">ITIM</span> IT Infrastructure Mgmt</span>
+      </div>
+    </div>
+
+    <div class="section-title">📚 Subject Progress</div>
+    <div class="subject-grid" id="subjectGrid"></div>
+
+    <div class="section-title">📊 Today's Summary</div>
+    <div class="info-box" id="todaySummaryBox">No sessions logged today yet. 💪</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-success" onclick="markTodayComplete()">🎉 Mark Today Complete</button>
+      <button class="btn btn-primary" onclick="switchTabName('progress')">📝 Log Session</button>
+    </div>
+  </div>
+
+  <!-- TIMETABLE -->
+  <div id="timetable" class="tab-content">
+    <div class="section-title">📅 22-Day Study Schedule (Mar 11 – Apr 1)</div>
+    <div class="notice-box">5–6 hours/day · 2 subjects · ~4 chapters total · No practicals · Cycle repeats every 7 days</div>
+    <div class="week-sel-wrap"><div class="week-selector" id="weekSel"></div></div>
+    <div id="weekContent"></div>
+  </div>
+
+  <!-- LOG PROGRESS -->
+  <div id="progress" class="tab-content">
+    <div class="section-title">🧾 Log Study Session</div>
+    <div class="log-form">
+      <div class="form-row">
+        <div class="form-group" style="max-width:120px;"><div class="form-label">Time</div><input type="time" id="sessTime" value="10:00"></div>
+        <div class="form-group"><div class="form-label">Subject</div>
+          <select id="subjSel">
+            <option value="SQA">🧩 SQA</option><option value="IS">🔒 Info Security</option>
+            <option value="BIDA">📊 BIDA</option><option value="FGIS">🗺️ FGIS</option><option value="ITIM">💻 ITIM</option>
+          </select>
+        </div>
+        <div class="form-group" style="max-width:100px;"><div class="form-label">Hours</div><input type="number" id="sessHrs" min="0.5" max="5" step="0.5" value="2"></div>
+        <div class="form-group" style="max-width:130px;"><div class="form-label">Slot</div>
+          <select id="sessSlot">
+            <option value="morning">☀️ Morning (10-12)</option>
+            <option value="afternoon">🌤️ Afternoon (3-5)</option>
+            <option value="night">🌙 Night (8-10)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="flex:3;"><div class="form-label">Topics Covered</div><textarea id="sessNotes" placeholder="e.g. Unit 2 – Testing Techniques, Boundary Value Analysis..."></textarea></div>
+        <div class="form-group" style="max-width:130px;justify-content:flex-end;"><button class="btn btn-primary" onclick="logSession()">✅ Log Session</button></div>
+      </div>
+    </div>
+    <div class="section-title">Today's Sessions</div>
+    <div id="todaySessDiv"><p style="color:var(--text3);font-size:13px;">No sessions logged today.</p></div>
+    <div class="section-title">Recent History</div>
+    <div id="historyDiv"><p style="color:var(--text3);font-size:13px;">No sessions recorded yet.</p></div>
+  </div>
+
+  <!-- TASKS -->
+  <div id="tasks" class="tab-content">
+    <div class="section-title">➕ Add Task</div>
+    <div class="log-form">
+      <div class="form-row">
+        <div class="form-group" style="flex:3;"><div class="form-label">Task</div><input type="text" id="newTask" placeholder="e.g. Revise SQA Unit 3..."></div>
+        <div class="form-group"><div class="form-label">Subject</div>
+          <select id="taskSubj">
+            <option value="General">General</option><option value="SQA">SQA</option><option value="IS">IS</option>
+            <option value="BIDA">BIDA</option><option value="FGIS">FGIS</option><option value="ITIM">ITIM</option>
+          </select>
+        </div>
+        <div class="form-group" style="max-width:120px;"><div class="form-label">Priority</div>
+          <select id="taskPri"><option value="low">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select>
+        </div>
+        <div class="form-group" style="max-width:110px;justify-content:flex-end;"><button class="btn btn-primary" onclick="addTask()">➕ Add</button></div>
+      </div>
+    </div>
+    <div class="section-title">Today's Tasks</div>
+    <div id="taskListDiv"><p style="color:var(--text3);font-size:13px;">No tasks yet.</p></div>
+  </div>
+
+</div>
+
+<script>
+const STUDY_START = new Date('2026-03-11');
+const STUDY_END   = new Date('2026-04-01');
+const EXAM_DATE   = new Date('2026-04-16');
+
+const CYCLE = [
+  {label:'Day 1',sub1:'SQA', sub2:'IS'},
+  {label:'Day 2',sub1:'FGIS',sub2:'BIDA'},
+  {label:'Day 3',sub1:'ITIM',sub2:'SQA'},
+  {label:'Day 4',sub1:'IS',  sub2:'FGIS'},
+  {label:'Day 5',sub1:'BIDA',sub2:'ITIM'},
+  {label:'Day 6',sub1:'SQA', sub2:'IS'},
+  {label:'Day 7',sub1:'FGIS',sub2:'BIDA'},
+];
+
+const SM = {
+  SQA: {name:'Software Quality Assurance',  icon:'🧩',color:'var(--SQA)', bg:'rgba(108,99,255,0.18)'},
+  IS:  {name:'Information Security',         icon:'🔒',color:'var(--IS)',  bg:'rgba(255,107,107,0.18)'},
+  BIDA:{name:'Business Intelligence & DA',   icon:'📊',color:'var(--BIDA)',bg:'rgba(67,233,123,0.18)'},
+  FGIS:{name:'Fundamentals of GIS',          icon:'🗺️',color:'var(--FGIS)',bg:'rgba(249,202,36,0.18)'},
+  ITIM:{name:'IT Infrastructure Mgmt',       icon:'💻',color:'var(--ITIM)',bg:'rgba(56,201,240,0.18)'},
+};
+
+function getToday(){return new Date().toISOString().split('T')[0];}
+
+function buildSchedule(){
+  const days=[];let d=new Date(STUDY_START);
+  while(d<=STUDY_END){days.push(new Date(d));d.setDate(d.getDate()+1);}
+  return days.map((dt,i)=>{
+    const c=CYCLE[i%7];
+    return {
+      date:dt.toISOString().split('T')[0],dt,dayNum:i+1,
+      cycleLabel:c.label,sub1:c.sub1,sub2:c.sub2,
+      slots:[
+        {slot:'morning',  label:'☀️ Morning',   time:'10:00 AM – 12:00 PM',subj:c.sub1,desc:'Study ~2 chapters'},
+        {slot:'afternoon',label:'🌤️ Afternoon', time:'3:00 PM – 5:00 PM',  subj:c.sub2,desc:'Study ~2 chapters'},
+        {slot:'night',    label:'🌙 Night',      time:'8:00 PM – 10:00 PM', subj:null,  desc:'Revise both subjects / cover remaining topics'},
+      ]
+    };
+  });
+}
+const SCHED = buildSchedule();
+
+let D = {
+  subjects:{SQA:{progress:0,hours:0},IS:{progress:0,hours:0},BIDA:{progress:0,hours:0},FGIS:{progress:0,hours:0},ITIM:{progress:0,hours:0}},
+  daily:{},tasks:[]
+};
+
+function loadD(){
+  try{const s=localStorage.getItem('s6v3');if(s)D=JSON.parse(s);}catch(e){}
+  if(!D.daily[getToday()])D.daily[getToday()]={slots:[],sessions:[],tasks:[]};
+  boot();
+}
+function saveD(){localStorage.setItem('s6v3',JSON.stringify(D));}
+
+function boot(){
+  updateCountdown();setInterval(updateCountdown,30000);
+  renderCycle();renderSubjects();renderDash();
+  renderWeekSel();showWeek(0);
+  renderTodaySess();renderHistory();renderTasks();
+}
+
+function switchTab(n,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(n).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+function switchTabName(n){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(n).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>{if(t.getAttribute('onclick')&&t.getAttribute('onclick').includes("'"+n+"'"))t.classList.add('active');});
+}
+
+function updateCountdown(){
+  const now=new Date(),diff=EXAM_DATE-now;
+  if(diff<=0){['cdDays','cdHrs','cdMin'].forEach(id=>document.getElementById(id).textContent='0');return;}
+  document.getElementById('cdDays').textContent=Math.floor(diff/86400000);
+  document.getElementById('cdHrs').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cdMin').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  const today=new Date();
+  document.getElementById('stStudyLeft').textContent=Math.max(0,Math.ceil((STUDY_END-today)/86400000));
+  document.getElementById('stExamLeft').textContent=Math.floor(diff/86400000);
+}
+
+function renderCycle(){
+  const g=document.getElementById('cycleGrid'),today=getToday();
+  const todayIdx=SCHED.findIndex(d=>d.date===today);
+  g.innerHTML=CYCLE.map((c,i)=>{
+    const isTod=todayIdx!==-1&&(todayIdx%7)===i;
+    const s1=SM[c.sub1],s2=SM[c.sub2];
+    return`<div class="cycle-day ${isTod?'today-cycle':''}">
+      <div class="cycle-day-num">${i+1}</div>
+      <div class="cycle-subjects">
+        <div class="cycle-pill" style="background:${s1.bg};color:${s1.color}">${c.sub1}</div>
+        <div class="cycle-pill" style="background:${s2.bg};color:${s2.color}">${c.sub2}</div>
+      </div></div>`;
+  }).join('');
+}
+
+function renderSubjects(){
+  document.getElementById('subjectGrid').innerHTML=Object.entries(SM).map(([k,m])=>{
+    const d=D.subjects[k]||{progress:0,hours:0};
+    return`<div class="subject-card">
+      <div class="subject-name"><div class="subject-dot" style="background:${m.color}"></div>${m.icon} ${k} — ${m.name}</div>
+      <div class="progress-wrap"><div class="progress-fill" id="pb_${k}" style="width:${d.progress}%;background:${m.color}"></div></div>
+      <div class="subject-meta"><span>${d.progress}%</span><span>${(d.hours||0).toFixed(1)}h</span></div>
+    </div>`;
+  }).join('');
+}
+
+function renderDash(){
+  const today=getToday(),td=D.daily[today]||{slots:[],sessions:[],tasks:[]};
+  const doneTasks=(td.tasks||[]).filter(t=>t.completed).length;
+  document.getElementById('stTasks').textContent=doneTasks;
+  let th=0;Object.values(D.subjects).forEach(s=>th+=(s.hours||0));
+  document.getElementById('stHours').textContent=th.toFixed(1);
+
+  const todaySD=SCHED.find(d=>d.date===today);
+  const box=document.getElementById('todayCycleBox');
+  if(!todaySD){box.innerHTML='📅 Outside study period. Exams start <strong>16 Apr 2026</strong>. Keep revising!';
+  }else{
+    const s1=SM[todaySD.sub1],s2=SM[todaySD.sub2];
+    box.innerHTML=`📍 <strong>Today: Study Day ${todaySD.dayNum} (${todaySD.cycleLabel})</strong> — ☀️ Morning: <span style="color:${s1.color}">${s1.icon} ${todaySD.sub1}</span> &nbsp;|&nbsp; 🌤️ Afternoon: <span style="color:${s2.color}">${s2.icon} ${todaySD.sub2}</span> &nbsp;|&nbsp; 🌙 Night: Revise both`;
+  }
+
+  const sessions=td.sessions||[];
+  const sumBox=document.getElementById('todaySummaryBox');
+  if(sessions.length===0&&doneTasks===0)sumBox.innerHTML='No sessions logged today yet. 💪';
+  else sumBox.innerHTML=`Today: <strong>${sessions.length}</strong> session(s) logged · <strong>${doneTasks}</strong> task(s) done ✅`;
+}
+
+// --- WEEK SELECTOR ---
+let activeWeekIdx=0;
+function renderWeekSel(){
+  const sel=document.getElementById('weekSel');
+  const now=new Date();
+  const curW=Math.min(2,Math.max(0,Math.floor((now-STUDY_START)/86400000/7)));
+  sel.innerHTML=['Week 1 (Mar 11–17)','Week 2 (Mar 18–24)','Week 3 (Mar 25–31)'].map((lbl,i)=>`
+    <button class="week-btn ${i===0?'active':''} ${i===curW?'cur':''}" id="wb${i}" onclick="setWeek(${i})">${lbl}</button>`).join('');
+}
+function setWeek(i){
+  activeWeekIdx=i;
+  document.querySelectorAll('.week-btn').forEach(b=>b.classList.remove('active'));
+  const wb=document.getElementById('wb'+i);if(wb)wb.classList.add('active');
+  showWeek(i);
+}
+function showWeek(wi){
+  const days=SCHED.slice(wi*7,(wi+1)*7);
+  const today=getToday();
+  document.getElementById('weekContent').innerHTML=days.map(day=>{
+    const isToday=day.date===today;
+    const td=D.daily[day.date]||{slots:[],sessions:[]};
+    const doneSlots=(td.slots||[]);
+    const s1=SM[day.sub1],s2=SM[day.sub2];
+    const dn=day.dt.toLocaleDateString('en-US',{weekday:'long'});
+    const ds=day.dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const rows=day.slots.map(sl=>{
+      const done=doneSlots.includes(sl.slot);
+      const sm=sl.subj?SM[sl.subj]:null;
+      return`<tr class="${done?'done-row':''}">
+        <td class="time-cell">${sl.label}<br>${sl.time}</td>
+        <td>${sm?`<span class="subj-tag" style="background:${sm.bg};color:${sm.color}">${sm.icon} ${sl.subj}</span>`:'<span style="color:var(--text3);font-size:11px">Both</span>'}</td>
+        <td style="color:var(--text2)">${sl.desc}</td>
+        <td><button class="status-btn ${done?'is-done':''}" onclick="toggleSlot('${day.date}','${sl.slot}')">${done?'✅ Done':'Mark Done'}</button></td>
+      </tr>`;
+    }).join('');
+    return`<div class="day-block ${isToday?'today-hl':''}">
+      <div class="day-hdr">
+        <div class="day-title">${dn}, ${ds} ${isToday?'<span class="today-badge">TODAY</span>':''} <span style="font-size:11px;color:var(--text3)">Day ${day.dayNum} · ${day.cycleLabel}</span></div>
+        <div style="display:flex;align-items:center;gap:7px;">
+          <span class="subj-tag" style="background:${s1.bg};color:${s1.color};font-size:11px">${s1.icon} ${day.sub1}</span>
+          <span class="subj-tag" style="background:${s2.bg};color:${s2.color};font-size:11px">${s2.icon} ${day.sub2}</span>
+          <span class="day-prog">${doneSlots.length}/3</span>
+        </div>
+      </div>
+      <table class="sess-table"><thead><tr><th>Time Slot</th><th>Subject</th><th>Goal</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
+    </div>`;
+  }).join('');
+}
+
+function toggleSlot(date,slot){
+  if(!D.daily[date])D.daily[date]={slots:[],sessions:[],tasks:[]};
+  const slots=D.daily[date].slots;
+  const idx=slots.indexOf(slot);
+  if(idx>-1)slots.splice(idx,1);else slots.push(slot);
+  saveD();showWeek(activeWeekIdx);renderDash();
+}
+
+// --- LOG SESSION ---
+function logSession(){
+  const subj=document.getElementById('subjSel').value;
+  const hrs=parseFloat(document.getElementById('sessHrs').value);
+  if(!subj||isNaN(hrs)||hrs<=0){alert('⚠️ Fill required fields');return;}
+  const sess={
+    time:document.getElementById('sessTime').value,
+    subject:subj,hours:hrs,
+    slot:document.getElementById('sessSlot').value,
+    notes:document.getElementById('sessNotes').value,
+    date:getToday(),ts:Date.now()
+  };
+  const today=getToday();
+  if(!D.daily[today])D.daily[today]={slots:[],sessions:[],tasks:[]};
+  D.daily[today].sessions.push(sess);
+  if(!D.subjects[subj])D.subjects[subj]={progress:0,hours:0};
+  D.subjects[subj].hours=(D.subjects[subj].hours||0)+hrs;
+  D.subjects[subj].progress=Math.min(100,(D.subjects[subj].progress||0)+Math.round(hrs*4));
+  saveD();renderTodaySess();renderHistory();renderSubjects();renderDash();
+  document.getElementById('sessNotes').value='';
+  toast('✅ Session logged!');
+}
+
+function renderTodaySess(){
+  const today=getToday();
+  const sessions=(D.daily[today]?.sessions||[]).filter(s=>s.subject);
+  const c=document.getElementById('todaySessDiv');
+  if(!sessions.length){c.innerHTML='<p style="color:var(--text3);font-size:13px;">No sessions logged today.</p>';return;}
+  c.innerHTML=sessions.map(s=>{
+    const m=SM[s.subject];
+    return`<div class="sess-card tc">
+      <div><div style="font-size:13px"><span class="subj-tag" style="background:${m.bg};color:${m.color}">${m.icon} ${s.subject}</span> &nbsp;<strong>${s.hours}h</strong> · ${s.slot||''} · ${s.time}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:3px">${s.notes||'No notes'}</div></div>
+      <button class="btn btn-danger btn-sm" onclick="removeSession(${s.ts})">🗑️</button>
+    </div>`;
+  }).join('');
+}
+
+function renderHistory(){
+  let all=[];
+  Object.entries(D.daily).forEach(([date,d])=>(d.sessions||[]).filter(s=>s.subject).forEach(s=>all.push({...s,date})));
+  all.sort((a,b)=>b.ts-a.ts);
+  const c=document.getElementById('historyDiv');
+  if(!all.length){c.innerHTML='<p style="color:var(--text3);font-size:13px;">No sessions yet.</p>';return;}
+  c.innerHTML=all.slice(0,12).map(s=>{
+    const m=SM[s.subject];
+    return`<div class="sess-card">
+      <div><div style="font-size:13px"><span class="subj-tag" style="background:${m.bg};color:${m.color}">${m.icon} ${s.subject}</span> &nbsp;<strong>${s.hours}h</strong></div>
+      <div style="font-size:11px;color:var(--text3);margin-top:3px">${s.date} · ${s.slot||''} · ${s.notes||''}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function removeSession(ts){
+  const t=getToday();
+  if(D.daily[t])D.daily[t].sessions=D.daily[t].sessions.filter(s=>s.ts!==ts);
+  saveD();renderTodaySess();renderHistory();renderDash();
+}
+
+// --- TASKS ---
+function addTask(){
+  const text=document.getElementById('newTask').value.trim();
+  if(!text){alert('⚠️ Enter a task');return;}
+  const task={id:Date.now(),text,subject:document.getElementById('taskSubj').value,priority:document.getElementById('taskPri').value,completed:false,date:getToday()};
+  D.tasks.push(task);
+  const today=getToday();
+  if(!D.daily[today])D.daily[today]={slots:[],sessions:[],tasks:[]};
+  D.daily[today].tasks.push(task);
+  saveD();renderTasks();document.getElementById('newTask').value='';
+  toast('✅ Task added!');
+}
+
+function renderTasks(){
+  const today=getToday();
+  const tasks=D.daily[today]?.tasks||[];
+  const c=document.getElementById('taskListDiv');
+  if(!tasks.length){c.innerHTML='<p style="color:var(--text3);font-size:13px;">No tasks yet.</p>';return;}
+  c.innerHTML=tasks.map(t=>{
+    const pc=t.priority==='high'?'p-high':t.priority==='medium'?'p-medium':'p-low';
+    const sm=t.subject!=='General'&&SM[t.subject]?`<span class="subj-tag" style="background:${SM[t.subject].bg};color:${SM[t.subject].color};font-size:10px">${t.subject}</span>`:'';
+    return`<div class="task-item ${t.completed?'done':''}">
+      <div><div class="task-text">${t.text}</div>
+      <div class="task-meta">${sm}<span class="pri ${pc}">${t.priority}</span></div></div>
+      <div class="task-btns">
+        <button class="btn btn-success btn-sm" onclick="toggleTask(${t.id})">${t.completed?'↩️':'✅'}</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTask(${t.id})">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleTask(id){
+  const t=D.tasks.find(x=>x.id===id);if(t)t.completed=!t.completed;
+  const tt=(D.daily[getToday()]?.tasks||[]).find(x=>x.id===id);if(tt)tt.completed=!tt.completed;
+  saveD();renderTasks();renderDash();
+}
+function deleteTask(id){
+  D.tasks=D.tasks.filter(x=>x.id!==id);
+  const t=getToday();if(D.daily[t])D.daily[t].tasks=D.daily[t].tasks.filter(x=>x.id!==id);
+  saveD();renderTasks();renderDash();
+}
+
+function markTodayComplete(){
+  if(!confirm('🎉 Mark today as complete?'))return;
+  const today=getToday();
+  if(!D.daily[today])D.daily[today]={slots:[],sessions:[],tasks:[]};
+  D.daily[today].complete=true;
+  saveD();toast('🎉 Great work today!');renderDash();
+}
+
+function toast(msg){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:22px;right:22px;background:var(--accent);color:#fff;padding:11px 18px;border-radius:8px;font-size:13px;font-family:Space Grotesk,sans-serif;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.35);';
+  t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2400);
+}
+
+document.addEventListener('DOMContentLoaded',loadD);
+setInterval(saveD,30000);
+</script>
 </body>
 </html>
