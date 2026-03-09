@@ -178,6 +178,8 @@ select option{background:var(--surface2);}
     <div class="cd-item"><div class="cd-num" id="cdH">-</div><div class="cd-lbl">Hrs</div></div>
     <div class="cd-sep">:</div>
     <div class="cd-item"><div class="cd-num" id="cdM">-</div><div class="cd-lbl">Min</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-item"><div class="cd-num" id="cdS" style="color:var(--accent3)">-</div><div class="cd-lbl">Sec</div></div>
     <div class="cd-info" id="cdInfo">
       <div class="cd-next">⏳ Calculating...</div>
       <div class="cd-sub">Next exam</div>
@@ -372,7 +374,13 @@ function saveD(){localStorage.setItem('s6v4',JSON.stringify(D));}
 
 function boot(){
   renderExamStrip();renderExamFull();renderStrategy();
-  updateCountdown();setInterval(updateCountdown,30000);
+  // Initialize stats immediately on first load
+  const now = new Date();
+  document.getElementById('stStudy').textContent = Math.max(0, Math.ceil((STUDY_END - now) / 86400000));
+  document.getElementById('stExam').textContent  = Math.max(0, Math.ceil((new Date(EXAMS[0].date + 'T14:30:00') - now) / 86400000));
+  _lastSlowUpdate = Date.now();
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
   renderCycle();renderSubjects();renderDash();
   renderWeekSel();showWeek(0);
   renderTodaySess();renderHist();renderTasks();
@@ -440,24 +448,39 @@ function renderStrategy(){
 }
 
 // ===================== COUNTDOWN =====================
+let _lastSlowUpdate = 0;
 function updateCountdown(){
-  const now=new Date();
-  // Find next exam
-  const nextExam=EXAMS.find(e=>new Date(e.date)>now)||EXAMS[EXAMS.length-1];
-  const target=new Date(nextExam.date+'T14:30:00');
-  const diff=target-now;
-  if(diff>0){
-    document.getElementById('cdD').textContent=Math.floor(diff/86400000);
-    document.getElementById('cdH').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-    document.getElementById('cdM').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-    const m=SM[nextExam.subj];
-    document.getElementById('cdInfo').innerHTML=`<div class="cd-next" style="color:${m.color}">${m.icon} ${nextExam.subj} Exam</div><div class="cd-sub">${nextExam.day}</div>`;
+  const now = new Date();
+  // Find next upcoming exam by exact datetime
+  const nextExam = EXAMS.find(e => new Date(e.date + 'T14:30:00') > now) || EXAMS[EXAMS.length-1];
+  const target = new Date(nextExam.date + 'T14:30:00');
+  const diff = target - now;
+
+  if(diff > 0){
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000)  / 60000);
+    const secs  = Math.floor((diff % 60000)    / 1000);
+    document.getElementById('cdD').textContent = days;
+    document.getElementById('cdH').textContent = String(hours).padStart(2,'0');
+    document.getElementById('cdM').textContent = String(mins).padStart(2,'0');
+    document.getElementById('cdS').textContent = String(secs).padStart(2,'0');
+    const m = SM[nextExam.subj];
+    document.getElementById('cdInfo').innerHTML =
+      `<div class="cd-next" style="color:${m.color}">${m.icon} ${nextExam.subj} Exam</div><div class="cd-sub">${nextExam.day}</div>`;
+  } else {
+    ['cdD','cdH','cdM','cdS'].forEach(id => document.getElementById(id).textContent = '00');
+    document.getElementById('cdInfo').innerHTML = '<div class="cd-next">🎉 Exam is now!</div>';
   }
-  const today=now;
-  document.getElementById('stStudy').textContent=Math.max(0,Math.ceil((STUDY_END-today)/86400000));
-  const firstExam=new Date(EXAMS[0].date);
-  document.getElementById('stExam').textContent=Math.max(0,Math.ceil((firstExam-today)/86400000));
-  renderExamStrip();
+
+  // Heavier updates only once per minute
+  const nowMs = Date.now();
+  if(nowMs - _lastSlowUpdate > 60000){
+    _lastSlowUpdate = nowMs;
+    document.getElementById('stStudy').textContent = Math.max(0, Math.ceil((STUDY_END - now) / 86400000));
+    document.getElementById('stExam').textContent  = Math.max(0, Math.ceil((new Date(EXAMS[0].date + 'T14:30:00') - now) / 86400000));
+    renderExamStrip();
+  }
 }
 
 // ===================== CYCLE GRID =====================
