@@ -17,149 +17,178 @@ body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-ser
 body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse 80% 60% at 20% -10%,rgba(108,99,255,0.12) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 110%,rgba(67,233,123,0.07) 0%,transparent 60%);pointer-events:none;z-index:0;}
 .container{max-width:1280px;margin:0 auto;padding:20px;position:relative;z-index:1;}
 
-/* HEADER */
-.header{padding:36px 0 20px;text-align:center;}
-.header-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:10px;}
-.header h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;background:linear-gradient(135deg,#fff 30%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
-.header-meta{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:8px;}
-.header-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 13px;font-size:12px;color:var(--text2);}
-.header-badge.alert{border-color:rgba(255,107,107,0.4);background:rgba(255,107,107,0.08);color:#ff9a9a;}
+.header{padding:30px 0 16px;text-align:center;}
+.header-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:8px;}
+.header h1{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;background:linear-gradient(135deg,#fff 30%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+.header-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:6px;}
+.hbadge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text2);}
+.hbadge.alert{border-color:rgba(255,107,107,0.4);background:rgba(255,107,107,0.08);color:#ff9a9a;}
+.hbadge.green{border-color:rgba(67,233,123,0.4);background:rgba(67,233,123,0.08);color:var(--accent3);}
+
+/* EXAM SCHEDULE STRIP */
+.exam-strip{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:14px;}
+.exam-strip-title{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin-bottom:10px;}
+.exam-row{display:flex;gap:8px;flex-wrap:wrap;}
+.exam-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 13px;flex:1;min-width:130px;position:relative;overflow:hidden;}
+.exam-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:3px;}
+.exam-card[data-s="SQA"]::after{background:var(--SQA);}
+.exam-card[data-s="IS"]::after{background:var(--IS);}
+.exam-card[data-s="BIDA"]::after{background:var(--BIDA);}
+.exam-card[data-s="FGIS"]::after{background:var(--FGIS);}
+.exam-card[data-s="ITIM"]::after{background:var(--ITIM);}
+.exam-card.next-exam{border-color:rgba(249,202,36,0.5);background:rgba(249,202,36,0.06);}
+.exam-subj{font-size:12px;font-weight:700;margin-bottom:2px;}
+.exam-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);}
+.exam-days-left{font-size:10px;margin-top:3px;}
 
 /* COUNTDOWN */
-.countdown-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;margin-bottom:16px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
-.countdown-item{text-align:center;min-width:50px;}
-.countdown-num{font-size:1.7rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--accent);}
-.countdown-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
-.countdown-sep{color:var(--text3);font-size:1.3rem;padding-bottom:8px;}
-.countdown-note{margin-left:auto;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);border-radius:8px;padding:7px 13px;font-size:12px;color:#ff9a9a;}
+.countdown-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 18px;margin-bottom:14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.cd-item{text-align:center;min-width:44px;}
+.cd-num{font-size:1.6rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--accent);}
+.cd-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
+.cd-sep{color:var(--text3);font-size:1.2rem;padding-bottom:8px;}
+.cd-info{margin-left:auto;display:flex;flex-direction:column;gap:4px;text-align:right;}
+.cd-next{font-size:12px;color:var(--accent4);}
+.cd-sub{font-size:11px;color:var(--text3);}
 
 /* NAV */
-.nav-tabs{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;gap:4px;margin-bottom:18px;overflow-x:auto;}
-.nav-tab{flex:1;min-width:110px;padding:10px 12px;text-align:center;color:var(--text2);cursor:pointer;border:none;background:none;font-size:13px;font-family:'Space Grotesk',sans-serif;border-radius:7px;transition:all 0.2s;white-space:nowrap;}
+.nav-tabs{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;gap:4px;margin-bottom:16px;overflow-x:auto;}
+.nav-tab{flex:1;min-width:100px;padding:9px 11px;text-align:center;color:var(--text2);cursor:pointer;border:none;background:none;font-size:13px;font-family:'Space Grotesk',sans-serif;border-radius:7px;transition:all 0.2s;white-space:nowrap;}
 .nav-tab:hover{color:var(--text);background:var(--surface2);}
 .nav-tab.active{background:var(--accent);color:#fff;font-weight:600;}
 .tab-content{display:none;}.tab-content.active{display:block;}
 
 /* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:16px;}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;position:relative;overflow:hidden;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px;margin-bottom:14px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;text-align:center;position:relative;overflow:hidden;}
 .stat-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:3px;background:var(--accent);}
 .stat-card:nth-child(2)::after{background:var(--accent2);}.stat-card:nth-child(3)::after{background:var(--accent3);}.stat-card:nth-child(4)::after{background:var(--accent4);}
-.stat-num{font-size:2rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
-.stat-label{font-size:11px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px;}
+.stat-num{font-size:1.8rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.stat-lbl{font-size:11px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;}
 
 /* SUBJECT CARDS */
-.subject-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:16px;}
-.subject-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;transition:transform 0.2s,border-color 0.2s;}
-.subject-card:hover{transform:translateY(-3px);border-color:var(--accent);}
-.subject-name{font-size:12px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
-.subject-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.progress-wrap{background:var(--surface3);border-radius:10px;height:5px;overflow:hidden;margin:6px 0;}
-.progress-fill{height:100%;border-radius:10px;transition:width 0.4s;background:var(--accent);}
-.subject-meta{font-size:11px;color:var(--text3);display:flex;justify-content:space-between;}
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:9px;margin-bottom:14px;}
+.subj-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;transition:transform 0.2s,border-color 0.2s;}
+.subj-card:hover{transform:translateY(-3px);}
+.subj-name{font-size:12px;font-weight:600;margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+.sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.prog-wrap{background:var(--surface3);border-radius:10px;height:5px;overflow:hidden;margin:5px 0;}
+.prog-fill{height:100%;border-radius:10px;transition:width 0.4s;}
+.subj-meta{font-size:11px;color:var(--text3);display:flex;justify-content:space-between;}
+.exam-info-small{font-size:10px;margin-top:4px;padding:2px 6px;border-radius:4px;display:inline-block;}
 
 /* CYCLE GRID */
-.cycle-info{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
-.cycle-info h3{font-size:12px;color:var(--text2);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;}
-.cycle-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
-.cycle-day{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;}
-.cycle-day.today-cycle{border-color:var(--accent);background:rgba(108,99,255,0.12);}
-.cycle-day-num{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;margin-bottom:4px;}
-.cycle-subjects{display:flex;flex-direction:column;gap:2px;}
-.cycle-pill{border-radius:4px;padding:2px 4px;font-size:9px;font-weight:600;}
+.cycle-info{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;}
+.cycle-info h3{font-size:11px;color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;}
+.cycle-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.c-day{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:7px 3px;text-align:center;}
+.c-day.today-c{border-color:var(--accent);background:rgba(108,99,255,0.1);}
+.c-day-n{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:3px;}
+.c-subs{display:flex;flex-direction:column;gap:2px;}
+.cpill{border-radius:3px;padding:1px 4px;font-size:9px;font-weight:600;}
+.legend{margin-top:9px;display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--text2);}
+.stag{display:inline-block;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:600;}
+
+/* SECTION */
+.sec{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);font-weight:600;margin:16px 0 9px;display:flex;align-items:center;gap:7px;}
+.sec::after{content:'';flex:1;height:1px;background:var(--border);}
 
 /* TIMETABLE */
-.week-sel-wrap{overflow-x:auto;margin-bottom:14px;}
-.week-selector{display:flex;gap:6px;min-width:max-content;padding-bottom:4px;}
-.week-btn{padding:6px 14px;border:1px solid var(--border);background:var(--surface);color:var(--text2);border-radius:20px;cursor:pointer;font-size:12px;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;}
-.week-btn:hover{border-color:var(--accent);color:var(--text);}
-.week-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
-.week-btn.cur{border-color:var(--accent3);color:var(--accent3);}
+.week-sel-wrap{overflow-x:auto;margin-bottom:12px;}
+.week-sel{display:flex;gap:5px;min-width:max-content;padding-bottom:4px;}
+.wbtn{padding:5px 13px;border:1px solid var(--border);background:var(--surface);color:var(--text2);border-radius:18px;cursor:pointer;font-size:12px;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;}
+.wbtn:hover{border-color:var(--accent);color:var(--text);}
+.wbtn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+.wbtn.cur-week{border-color:var(--accent3);color:var(--accent3);}
 
-.day-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;}
-.day-block.today-hl{border-color:rgba(249,202,36,0.45);}
-.day-hdr{padding:11px 16px;display:flex;justify-content:space-between;align-items:center;background:var(--surface2);border-bottom:1px solid var(--border);}
-.day-title{font-weight:600;font-size:13px;display:flex;align-items:center;gap:8px;}
-.today-badge{background:var(--accent4);color:#000;font-size:10px;padding:1px 7px;border-radius:10px;font-weight:700;}
-.day-prog{font-size:11px;background:rgba(67,233,123,0.12);color:var(--accent3);border:1px solid rgba(67,233,123,0.25);padding:3px 9px;border-radius:10px;}
-.sess-table{width:100%;}
-.sess-table th{background:var(--surface3);padding:8px 14px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);font-weight:500;}
-.sess-table td{padding:9px 14px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle;}
-.sess-table tr:last-child td{border-bottom:none;}
-.sess-table tr.done-row td{color:var(--text2);background:rgba(67,233,123,0.03);}
-.time-cell{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);}
-.subj-tag{display:inline-block;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:600;}
-.status-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:3px 9px;border-radius:6px;cursor:pointer;font-size:11px;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;}
+.day-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:9px;overflow:hidden;}
+.day-block.today-hl{border-color:rgba(249,202,36,0.4);}
+.day-hdr{padding:10px 15px;display:flex;justify-content:space-between;align-items:center;background:var(--surface2);border-bottom:1px solid var(--border);}
+.day-title{font-weight:600;font-size:13px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.today-badge{background:var(--accent4);color:#000;font-size:10px;padding:1px 7px;border-radius:9px;font-weight:700;}
+.day-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.day-prog{font-size:11px;background:rgba(67,233,123,0.1);color:var(--accent3);border:1px solid rgba(67,233,123,0.22);padding:2px 8px;border-radius:9px;}
+
+.st{width:100%;}
+.st th{background:var(--surface3);padding:7px 13px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);font-weight:500;}
+.st td{padding:8px 13px;border-bottom:1px solid var(--border);font-size:12px;vertical-align:middle;}
+.st tr:last-child td{border-bottom:none;}
+.st tr.done-row td{color:var(--text2);background:rgba(67,233,123,0.03);}
+.tcell{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);}
+.status-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:3px 8px;border-radius:5px;cursor:pointer;font-size:11px;font-family:'Space Grotesk',sans-serif;transition:all 0.2s;}
 .status-btn:hover{border-color:var(--accent);color:var(--accent);}
-.status-btn.is-done{background:rgba(67,233,123,0.12);border-color:rgba(67,233,123,0.35);color:var(--accent3);}
-
-/* SECTION TITLE */
-.section-title{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);font-weight:600;margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.status-btn.is-done{background:rgba(67,233,123,0.1);border-color:rgba(67,233,123,0.3);color:var(--accent3);}
 
 /* FORMS */
-.log-form{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;}
-.form-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px;}
-.form-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:110px;}
-.form-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;}
-input,select,textarea{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 11px;border-radius:7px;font-size:13px;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color 0.2s;}
+.log-form{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;}
+.form-row{display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end;margin-bottom:9px;}
+.fg{display:flex;flex-direction:column;gap:4px;flex:1;min-width:100px;}
+.fl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;}
+input,select,textarea{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:13px;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color 0.2s;}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);}
-textarea{resize:vertical;min-height:52px;}
+textarea{resize:vertical;min-height:50px;}
 select option{background:var(--surface2);}
-
-.btn{padding:8px 16px;border:none;border-radius:7px;cursor:pointer;font-size:13px;font-family:'Space Grotesk',sans-serif;font-weight:600;transition:all 0.2s;display:inline-flex;align-items:center;gap:5px;}
+.btn{padding:7px 15px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-family:'Space Grotesk',sans-serif;font-weight:600;transition:all 0.2s;display:inline-flex;align-items:center;gap:5px;}
 .btn-primary{background:var(--accent);color:#fff;}
-.btn-success{background:rgba(67,233,123,0.15);color:var(--accent3);border:1px solid rgba(67,233,123,0.3);}
-.btn-danger{background:rgba(255,107,107,0.15);color:#ff9a9a;border:1px solid rgba(255,107,107,0.3);}
-.btn-sm{padding:4px 10px;font-size:11px;}
+.btn-success{background:rgba(67,233,123,0.14);color:var(--accent3);border:1px solid rgba(67,233,123,0.28);}
+.btn-danger{background:rgba(255,107,107,0.14);color:#ff9a9a;border:1px solid rgba(255,107,107,0.28);}
+.btn-sm{padding:3px 9px;font-size:11px;}
 .btn:hover{transform:translateY(-1px);filter:brightness(1.1);}
 
-.sess-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.sess-card.tc{border-color:rgba(67,233,123,0.28);}
+.sess-card{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:10px 13px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:9px;}
+.sess-card.tc{border-color:rgba(67,233,123,0.25);}
+.task-item{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:10px 13px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:9px;}
+.task-item.done{opacity:0.43;}.task-item.done .ttxt{text-decoration:line-through;}
+.ttxt{font-size:13px;}.tmeta{font-size:11px;color:var(--text3);margin-top:2px;display:flex;gap:6px;}
+.pri{font-size:10px;padding:1px 6px;border-radius:9px;font-weight:600;}
+.p-high{background:rgba(255,107,107,0.18);color:#ff9a9a;}.p-medium{background:rgba(249,202,36,0.18);color:var(--accent4);}.p-low{background:rgba(67,233,123,0.18);color:var(--accent3);}
+.tbtns{display:flex;gap:4px;flex-shrink:0;}
 
-.task-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:7px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.task-item.done{opacity:0.45;}.task-item.done .task-text{text-decoration:line-through;}
-.task-text{font-size:13px;}
-.task-meta{font-size:11px;color:var(--text3);margin-top:3px;display:flex;gap:7px;}
-.pri{font-size:10px;padding:1px 7px;border-radius:10px;font-weight:600;}
-.p-high{background:rgba(255,107,107,0.2);color:#ff9a9a;}.p-medium{background:rgba(249,202,36,0.2);color:var(--accent4);}.p-low{background:rgba(67,233,123,0.2);color:var(--accent3);}
-.task-btns{display:flex;gap:5px;flex-shrink:0;}
+.notice{background:rgba(255,107,107,0.07);border:1px solid rgba(255,107,107,0.2);border-radius:9px;padding:11px 15px;margin-bottom:12px;font-size:12px;color:#ff9a9a;}
+.info{background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.2);border-radius:9px;padding:11px 15px;margin-bottom:12px;font-size:13px;color:#a8a3ff;}
 
-.notice-box{background:rgba(255,107,107,0.07);border:1px solid rgba(255,107,107,0.22);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:12px;color:#ff9a9a;}
-.info-box{background:rgba(108,99,255,0.07);border:1px solid rgba(108,99,255,0.22);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:13px;color:#a8a3ff;}
-
-@media(max-width:600px){
-  .cycle-grid{grid-template-columns:repeat(4,1fr);}
-  .stats-grid{grid-template-columns:repeat(2,1fr);}
-}
+@media(max-width:600px){.cycle-grid{grid-template-columns:repeat(4,1fr);}.stats-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- HEADER -->
   <div class="header">
-    <div class="header-eyebrow">Academic Year 2025–26</div>
+    <div class="header-eyebrow">University of Mumbai · T.Y.B.Sc. IT · Summer 2026</div>
     <h1>📘 Semester 6 Study Planner</h1>
     <div class="header-meta">
-      <div class="header-badge">📅 Study: 11 Mar – 1 Apr 2026</div>
-      <div class="header-badge">🕐 10–12 AM · 3–5 PM · 8–10 PM</div>
-      <div class="header-badge alert">🚨 Exams from 16 Apr 2026</div>
+      <div class="hbadge">📅 Study: 11 Mar – 1 Apr 2026</div>
+      <div class="hbadge">🕐 10–12 AM · 3–5 PM · 8–10 PM</div>
+      <div class="hbadge green">✅ Exam TT: 16–21 Apr 2026</div>
+      <div class="hbadge alert">⏱️ All exams: 2:30–5:00 PM</div>
     </div>
   </div>
 
-  <div class="countdown-bar">
-    <div class="countdown-item"><div class="countdown-num" id="cdDays">-</div><div class="countdown-label">Days</div></div>
-    <div class="countdown-sep">:</div>
-    <div class="countdown-item"><div class="countdown-num" id="cdHrs">-</div><div class="countdown-label">Hours</div></div>
-    <div class="countdown-sep">:</div>
-    <div class="countdown-item"><div class="countdown-num" id="cdMin">-</div><div class="countdown-label">Mins</div></div>
-    <span style="color:var(--text2);font-size:12px;margin-left:6px;">until exams<br><span style="font-size:11px;color:var(--text3)">(16 Apr 2026)</span></span>
-    <div class="countdown-note">📋 Exam timetable to be shared soon</div>
+  <!-- EXAM STRIP -->
+  <div class="exam-strip">
+    <div class="exam-strip-title">📋 University of Mumbai — Revised Examination Timetable (1S00256)</div>
+    <div class="exam-row" id="examRow"></div>
   </div>
 
+  <!-- COUNTDOWN -->
+  <div class="countdown-bar">
+    <div class="cd-item"><div class="cd-num" id="cdD">-</div><div class="cd-lbl">Days</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-item"><div class="cd-num" id="cdH">-</div><div class="cd-lbl">Hrs</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-item"><div class="cd-num" id="cdM">-</div><div class="cd-lbl">Min</div></div>
+    <div class="cd-info" id="cdInfo">
+      <div class="cd-next">⏳ Calculating...</div>
+      <div class="cd-sub">Next exam</div>
+    </div>
+  </div>
+
+  <!-- NAV -->
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
     <button class="nav-tab" onclick="switchTab('timetable',this)">📅 Timetable</button>
+    <button class="nav-tab" onclick="switchTab('exams',this)">🎓 Exam Schedule</button>
     <button class="nav-tab" onclick="switchTab('progress',this)">🧾 Log Progress</button>
     <button class="nav-tab" onclick="switchTab('tasks',this)">✅ Tasks</button>
   </div>
@@ -167,33 +196,32 @@ select option{background:var(--surface2);}
   <!-- DASHBOARD -->
   <div id="dashboard" class="tab-content active">
     <div class="stats-grid">
-      <div class="stat-card"><div class="stat-num" id="stStudyLeft">22</div><div class="stat-label">Study Days Left</div></div>
-      <div class="stat-card"><div class="stat-num" id="stExamLeft">-</div><div class="stat-label">Days to Exam</div></div>
-      <div class="stat-card"><div class="stat-num" id="stTasks">0</div><div class="stat-label">Tasks Done Today</div></div>
-      <div class="stat-card"><div class="stat-num" id="stHours">0</div><div class="stat-label">Total Hours Logged</div></div>
+      <div class="stat-card"><div class="stat-num" id="stStudy">22</div><div class="stat-lbl">Study Days Left</div></div>
+      <div class="stat-card"><div class="stat-num" id="stExam">-</div><div class="stat-lbl">Days to 1st Exam</div></div>
+      <div class="stat-card"><div class="stat-num" id="stTasks">0</div><div class="stat-lbl">Tasks Done Today</div></div>
+      <div class="stat-card"><div class="stat-num" id="stHours">0</div><div class="stat-lbl">Hours Logged</div></div>
     </div>
 
-    <div class="notice-box">🚨 <strong>Exam Postponed!</strong> New start: <strong>16 April 2026</strong>. Timetable coming soon. Practicals are complete — no lab sessions.</div>
-    <div class="info-box" id="todayCycleBox">📍 Loading today's schedule...</div>
+    <div class="info" id="todayCycleBox">📍 Loading today's schedule...</div>
 
     <div class="cycle-info">
-      <h3>🔄 7-Day Study Cycle (repeats every week)</h3>
+      <h3>🔄 7-Day Study Cycle (repeating)</h3>
       <div class="cycle-grid" id="cycleGrid"></div>
-      <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--text2);">
-        <span><span class="subj-tag" style="background:rgba(108,99,255,0.2);color:var(--SQA)">SQA</span> Software Quality Assurance</span>
-        <span><span class="subj-tag" style="background:rgba(255,107,107,0.2);color:var(--IS)">IS</span> Information Security</span>
-        <span><span class="subj-tag" style="background:rgba(67,233,123,0.2);color:var(--BIDA)">BIDA</span> Business Intelligence</span>
-        <span><span class="subj-tag" style="background:rgba(249,202,36,0.2);color:var(--FGIS)">FGIS</span> Fundamentals of GIS</span>
-        <span><span class="subj-tag" style="background:rgba(56,201,240,0.2);color:var(--ITIM)">ITIM</span> IT Infrastructure Mgmt</span>
+      <div class="legend">
+        <span><span class="stag" style="background:rgba(108,99,255,0.2);color:var(--SQA)">SQA</span> Software Quality Assurance — Exam: Thu 16 Apr</span>
+        <span><span class="stag" style="background:rgba(255,107,107,0.2);color:var(--IS)">IS</span> Information Security — Exam: Fri 17 Apr</span>
+        <span><span class="stag" style="background:rgba(67,233,123,0.2);color:var(--BIDA)">BIDA</span> Business Intelligence & DA — Exam: Sat 18 Apr</span>
+        <span><span class="stag" style="background:rgba(249,202,36,0.2);color:var(--FGIS)">FGIS</span> Fundamentals of GIS — Exam: Mon 20 Apr</span>
+        <span><span class="stag" style="background:rgba(56,201,240,0.2);color:var(--ITIM)">ITIM</span> IT Infrastructure Mgmt — Exam: Tue 21 Apr</span>
       </div>
     </div>
 
-    <div class="section-title">📚 Subject Progress</div>
-    <div class="subject-grid" id="subjectGrid"></div>
+    <div class="sec">📚 Subject Progress</div>
+    <div class="subj-grid" id="subjGrid"></div>
 
-    <div class="section-title">📊 Today's Summary</div>
-    <div class="info-box" id="todaySummaryBox">No sessions logged today yet. 💪</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <div class="sec">📊 Today's Summary</div>
+    <div class="info" id="todaySumBox">No sessions logged today yet. 💪</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;">
       <button class="btn btn-success" onclick="markTodayComplete()">🎉 Mark Today Complete</button>
       <button class="btn btn-primary" onclick="switchTabName('progress')">📝 Log Session</button>
     </div>
@@ -201,72 +229,90 @@ select option{background:var(--surface2);}
 
   <!-- TIMETABLE -->
   <div id="timetable" class="tab-content">
-    <div class="section-title">📅 22-Day Study Schedule (Mar 11 – Apr 1)</div>
-    <div class="notice-box">5–6 hours/day · 2 subjects · ~4 chapters total · No practicals · Cycle repeats every 7 days</div>
-    <div class="week-sel-wrap"><div class="week-selector" id="weekSel"></div></div>
+    <div class="sec">📅 22-Day Study Schedule (Mar 11 – Apr 1)</div>
+    <div class="notice">5–6 hrs/day · 2 subjects · ~4 chapters total · No practicals · 7-day cycle repeats</div>
+    <div class="week-sel-wrap"><div class="week-sel" id="weekSel"></div></div>
     <div id="weekContent"></div>
+  </div>
+
+  <!-- EXAM SCHEDULE TAB -->
+  <div id="exams" class="tab-content">
+    <div class="sec">🎓 Official Exam Schedule — University of Mumbai</div>
+    <div class="notice">All exams at <strong>2:30 PM – 5:00 PM</strong>. Report 20 mins early. No mobile phones in hall.</div>
+    <div id="examFullList"></div>
+
+    <div class="sec" style="margin-top:20px">📖 Last-Week Strategy (Apr 11–15)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px;margin-bottom:14px;" id="stratGrid"></div>
   </div>
 
   <!-- LOG PROGRESS -->
   <div id="progress" class="tab-content">
-    <div class="section-title">🧾 Log Study Session</div>
+    <div class="sec">🧾 Log Study Session</div>
     <div class="log-form">
       <div class="form-row">
-        <div class="form-group" style="max-width:120px;"><div class="form-label">Time</div><input type="time" id="sessTime" value="10:00"></div>
-        <div class="form-group"><div class="form-label">Subject</div>
+        <div class="fg" style="max-width:115px;"><div class="fl">Time</div><input type="time" id="sessTime" value="10:00"></div>
+        <div class="fg"><div class="fl">Subject</div>
           <select id="subjSel">
-            <option value="SQA">🧩 SQA</option><option value="IS">🔒 Info Security</option>
-            <option value="BIDA">📊 BIDA</option><option value="FGIS">🗺️ FGIS</option><option value="ITIM">💻 ITIM</option>
+            <option value="SQA">🧩 SQA — Exam Thu 16 Apr</option>
+            <option value="IS">🔒 IS — Exam Fri 17 Apr</option>
+            <option value="BIDA">📊 BIDA — Exam Sat 18 Apr</option>
+            <option value="FGIS">🗺️ FGIS — Exam Mon 20 Apr</option>
+            <option value="ITIM">💻 ITIM — Exam Tue 21 Apr</option>
           </select>
         </div>
-        <div class="form-group" style="max-width:100px;"><div class="form-label">Hours</div><input type="number" id="sessHrs" min="0.5" max="5" step="0.5" value="2"></div>
-        <div class="form-group" style="max-width:130px;"><div class="form-label">Slot</div>
+        <div class="fg" style="max-width:95px;"><div class="fl">Hours</div><input type="number" id="sessHrs" min="0.5" max="5" step="0.5" value="2"></div>
+        <div class="fg" style="max-width:125px;"><div class="fl">Slot</div>
           <select id="sessSlot">
-            <option value="morning">☀️ Morning (10-12)</option>
-            <option value="afternoon">🌤️ Afternoon (3-5)</option>
-            <option value="night">🌙 Night (8-10)</option>
+            <option value="morning">☀️ Morning 10–12</option>
+            <option value="afternoon">🌤️ Afternoon 3–5</option>
+            <option value="night">🌙 Night 8–10</option>
           </select>
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group" style="flex:3;"><div class="form-label">Topics Covered</div><textarea id="sessNotes" placeholder="e.g. Unit 2 – Testing Techniques, Boundary Value Analysis..."></textarea></div>
-        <div class="form-group" style="max-width:130px;justify-content:flex-end;"><button class="btn btn-primary" onclick="logSession()">✅ Log Session</button></div>
+        <div class="fg" style="flex:3;"><div class="fl">Topics Covered</div><textarea id="sessNotes" placeholder="e.g. Unit 2 – Testing Techniques, Boundary Value Analysis..."></textarea></div>
+        <div class="fg" style="max-width:120px;justify-content:flex-end;"><button class="btn btn-primary" onclick="logSession()">✅ Log</button></div>
       </div>
     </div>
-    <div class="section-title">Today's Sessions</div>
+    <div class="sec">Today's Sessions</div>
     <div id="todaySessDiv"><p style="color:var(--text3);font-size:13px;">No sessions logged today.</p></div>
-    <div class="section-title">Recent History</div>
-    <div id="historyDiv"><p style="color:var(--text3);font-size:13px;">No sessions recorded yet.</p></div>
+    <div class="sec">Recent History</div>
+    <div id="histDiv"><p style="color:var(--text3);font-size:13px;">No sessions recorded yet.</p></div>
   </div>
 
   <!-- TASKS -->
   <div id="tasks" class="tab-content">
-    <div class="section-title">➕ Add Task</div>
+    <div class="sec">➕ Add Task</div>
     <div class="log-form">
       <div class="form-row">
-        <div class="form-group" style="flex:3;"><div class="form-label">Task</div><input type="text" id="newTask" placeholder="e.g. Revise SQA Unit 3..."></div>
-        <div class="form-group"><div class="form-label">Subject</div>
-          <select id="taskSubj">
-            <option value="General">General</option><option value="SQA">SQA</option><option value="IS">IS</option>
-            <option value="BIDA">BIDA</option><option value="FGIS">FGIS</option><option value="ITIM">ITIM</option>
-          </select>
+        <div class="fg" style="flex:3;"><div class="fl">Task</div><input type="text" id="newTask" placeholder="e.g. Complete SQA Unit 3 notes..."></div>
+        <div class="fg"><div class="fl">Subject</div>
+          <select id="taskSubj"><option value="General">General</option><option value="SQA">SQA</option><option value="IS">IS</option><option value="BIDA">BIDA</option><option value="FGIS">FGIS</option><option value="ITIM">ITIM</option></select>
         </div>
-        <div class="form-group" style="max-width:120px;"><div class="form-label">Priority</div>
+        <div class="fg" style="max-width:115px;"><div class="fl">Priority</div>
           <select id="taskPri"><option value="low">🟢 Low</option><option value="medium">🟡 Medium</option><option value="high">🔴 High</option></select>
         </div>
-        <div class="form-group" style="max-width:110px;justify-content:flex-end;"><button class="btn btn-primary" onclick="addTask()">➕ Add</button></div>
+        <div class="fg" style="max-width:100px;justify-content:flex-end;"><button class="btn btn-primary" onclick="addTask()">➕ Add</button></div>
       </div>
     </div>
-    <div class="section-title">Today's Tasks</div>
+    <div class="sec">Today's Tasks</div>
     <div id="taskListDiv"><p style="color:var(--text3);font-size:13px;">No tasks yet.</p></div>
   </div>
 
 </div>
 
 <script>
+// ===================== CONFIG =====================
 const STUDY_START = new Date('2026-03-11');
 const STUDY_END   = new Date('2026-04-01');
-const EXAM_DATE   = new Date('2026-04-16');
+
+const EXAMS = [
+  { subj:'SQA',  date:'2026-04-16', day:'Thursday, 16 April',   code:'88708', paper:'Software Testing & Quality Assurance (Rev.)',        time:'2:30–5:00 PM' },
+  { subj:'IS',   date:'2026-04-17', day:'Friday, 17 April',     code:'88709', paper:'Information Security (Rev.)',                         time:'2:30–5:00 PM' },
+  { subj:'BIDA', date:'2026-04-18', day:'Saturday, 18 April',   code:'88710', paper:'Business Intelligence & Data Analysis (Rev.)',        time:'2:30–5:00 PM' },
+  { subj:'FGIS', date:'2026-04-20', day:'Monday, 20 April',     code:'88716', paper:'Fundamental of GIS (Rev.)',                          time:'2:30–5:00 PM' },
+  { subj:'ITIM', date:'2026-04-21', day:'Tuesday, 21 April',    code:'88718', paper:'I.T. Infrastructure Management (Rev.)',               time:'2:30–5:00 PM' },
+];
 
 const CYCLE = [
   {label:'Day 1',sub1:'SQA', sub2:'IS'},
@@ -279,12 +325,21 @@ const CYCLE = [
 ];
 
 const SM = {
-  SQA: {name:'Software Quality Assurance',  icon:'🧩',color:'var(--SQA)', bg:'rgba(108,99,255,0.18)'},
-  IS:  {name:'Information Security',         icon:'🔒',color:'var(--IS)',  bg:'rgba(255,107,107,0.18)'},
-  BIDA:{name:'Business Intelligence & DA',   icon:'📊',color:'var(--BIDA)',bg:'rgba(67,233,123,0.18)'},
-  FGIS:{name:'Fundamentals of GIS',          icon:'🗺️',color:'var(--FGIS)',bg:'rgba(249,202,36,0.18)'},
-  ITIM:{name:'IT Infrastructure Mgmt',       icon:'💻',color:'var(--ITIM)',bg:'rgba(56,201,240,0.18)'},
+  SQA: {name:'Software Quality Assurance',icon:'🧩',color:'var(--SQA)',bg:'rgba(108,99,255,0.18)',examDate:'Thu 16 Apr'},
+  IS:  {name:'Information Security',       icon:'🔒',color:'var(--IS)', bg:'rgba(255,107,107,0.18)',examDate:'Fri 17 Apr'},
+  BIDA:{name:'Business Intelligence & DA', icon:'📊',color:'var(--BIDA)',bg:'rgba(67,233,123,0.18)',examDate:'Sat 18 Apr'},
+  FGIS:{name:'Fundamentals of GIS',        icon:'🗺️',color:'var(--FGIS)',bg:'rgba(249,202,36,0.18)',examDate:'Mon 20 Apr'},
+  ITIM:{name:'IT Infrastructure Mgmt',     icon:'💻',color:'var(--ITIM)',bg:'rgba(56,201,240,0.18)',examDate:'Tue 21 Apr'},
 };
+
+const LAST_WEEK_STRATEGY = [
+  {day:'Fri 10 Apr', focus:'🧩 SQA Full Revision', tip:'All 5 units rapid review + key diagrams'},
+  {day:'Sat 11 Apr', focus:'🔒 IS Full Revision',  tip:'Encryption, firewalls, network security summary'},
+  {day:'Sun 12 Apr', focus:'📊 BIDA Full Revision', tip:'Data mining, ML models, BI concepts'},
+  {day:'Mon 13 Apr', focus:'🗺️ FGIS Full Revision', tip:'Spatial analysis, projections, GIS operations'},
+  {day:'Tue 14 Apr', focus:'💻 ITIM Full Revision',  tip:'ITIL 4 framework, service management, practices'},
+  {day:'Wed 15 Apr', focus:'🔁 Quick Revision All',  tip:'Formulas, key terms, past paper practice'},
+];
 
 function getToday(){return new Date().toISOString().split('T')[0];}
 
@@ -297,32 +352,30 @@ function buildSchedule(){
       date:dt.toISOString().split('T')[0],dt,dayNum:i+1,
       cycleLabel:c.label,sub1:c.sub1,sub2:c.sub2,
       slots:[
-        {slot:'morning',  label:'☀️ Morning',   time:'10:00 AM – 12:00 PM',subj:c.sub1,desc:'Study ~2 chapters'},
-        {slot:'afternoon',label:'🌤️ Afternoon', time:'3:00 PM – 5:00 PM',  subj:c.sub2,desc:'Study ~2 chapters'},
-        {slot:'night',    label:'🌙 Night',      time:'8:00 PM – 10:00 PM', subj:null,  desc:'Revise both subjects / cover remaining topics'},
+        {slot:'morning',  label:'☀️ Morning',  time:'10:00 AM – 12:00 PM',subj:c.sub1,desc:'Study ~2 chapters'},
+        {slot:'afternoon',label:'🌤️ Afternoon',time:'3:00 PM – 5:00 PM',  subj:c.sub2,desc:'Study ~2 chapters'},
+        {slot:'night',    label:'🌙 Night',     time:'8:00 PM – 10:00 PM', subj:null,  desc:'Revise both / cover remaining topics'},
       ]
     };
   });
 }
 const SCHED = buildSchedule();
 
-let D = {
-  subjects:{SQA:{progress:0,hours:0},IS:{progress:0,hours:0},BIDA:{progress:0,hours:0},FGIS:{progress:0,hours:0},ITIM:{progress:0,hours:0}},
-  daily:{},tasks:[]
-};
+let D={subjects:{SQA:{progress:0,hours:0},IS:{progress:0,hours:0},BIDA:{progress:0,hours:0},FGIS:{progress:0,hours:0},ITIM:{progress:0,hours:0}},daily:{},tasks:[]};
 
 function loadD(){
-  try{const s=localStorage.getItem('s6v3');if(s)D=JSON.parse(s);}catch(e){}
-  if(!D.daily[getToday()])D.daily[getToday()]={slots:[],sessions:[],tasks:[]};
+  try{const s=localStorage.getItem('s6v4');if(s)D=JSON.parse(s);}catch(e){}
+  const t=getToday();if(!D.daily[t])D.daily[t]={slots:[],sessions:[],tasks:[]};
   boot();
 }
-function saveD(){localStorage.setItem('s6v3',JSON.stringify(D));}
+function saveD(){localStorage.setItem('s6v4',JSON.stringify(D));}
 
 function boot(){
+  renderExamStrip();renderExamFull();renderStrategy();
   updateCountdown();setInterval(updateCountdown,30000);
   renderCycle();renderSubjects();renderDash();
   renderWeekSel();showWeek(0);
-  renderTodaySess();renderHistory();renderTasks();
+  renderTodaySess();renderHist();renderTasks();
 }
 
 function switchTab(n,btn){
@@ -338,76 +391,143 @@ function switchTabName(n){
   document.querySelectorAll('.nav-tab').forEach(t=>{if(t.getAttribute('onclick')&&t.getAttribute('onclick').includes("'"+n+"'"))t.classList.add('active');});
 }
 
-function updateCountdown(){
-  const now=new Date(),diff=EXAM_DATE-now;
-  if(diff<=0){['cdDays','cdHrs','cdMin'].forEach(id=>document.getElementById(id).textContent='0');return;}
-  document.getElementById('cdDays').textContent=Math.floor(diff/86400000);
-  document.getElementById('cdHrs').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-  document.getElementById('cdMin').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-  const today=new Date();
-  document.getElementById('stStudyLeft').textContent=Math.max(0,Math.ceil((STUDY_END-today)/86400000));
-  document.getElementById('stExamLeft').textContent=Math.floor(diff/86400000);
-}
-
-function renderCycle(){
-  const g=document.getElementById('cycleGrid'),today=getToday();
-  const todayIdx=SCHED.findIndex(d=>d.date===today);
-  g.innerHTML=CYCLE.map((c,i)=>{
-    const isTod=todayIdx!==-1&&(todayIdx%7)===i;
-    const s1=SM[c.sub1],s2=SM[c.sub2];
-    return`<div class="cycle-day ${isTod?'today-cycle':''}">
-      <div class="cycle-day-num">${i+1}</div>
-      <div class="cycle-subjects">
-        <div class="cycle-pill" style="background:${s1.bg};color:${s1.color}">${c.sub1}</div>
-        <div class="cycle-pill" style="background:${s2.bg};color:${s2.color}">${c.sub2}</div>
-      </div></div>`;
-  }).join('');
-}
-
-function renderSubjects(){
-  document.getElementById('subjectGrid').innerHTML=Object.entries(SM).map(([k,m])=>{
-    const d=D.subjects[k]||{progress:0,hours:0};
-    return`<div class="subject-card">
-      <div class="subject-name"><div class="subject-dot" style="background:${m.color}"></div>${m.icon} ${k} — ${m.name}</div>
-      <div class="progress-wrap"><div class="progress-fill" id="pb_${k}" style="width:${d.progress}%;background:${m.color}"></div></div>
-      <div class="subject-meta"><span>${d.progress}%</span><span>${(d.hours||0).toFixed(1)}h</span></div>
+// ===================== EXAM STRIP =====================
+function renderExamStrip(){
+  const now=new Date();
+  const nextExam=EXAMS.find(e=>new Date(e.date)>=now);
+  document.getElementById('examRow').innerHTML=EXAMS.map(e=>{
+    const exam=new Date(e.date);
+    const diff=Math.ceil((exam-now)/86400000);
+    const isNext=nextExam&&e.date===nextExam.date;
+    const m=SM[e.subj];
+    return`<div class="exam-card ${isNext?'next-exam':''}" data-s="${e.subj}">
+      <div class="exam-subj" style="color:${m.color}">${m.icon} ${e.subj}</div>
+      <div class="exam-date">${e.day.split(',')[0]}, ${e.day.split(' ').slice(-2).join(' ')}</div>
+      <div class="exam-days-left" style="color:${diff<=3?'#ff9a9a':diff<=7?'var(--accent4)':'var(--text3)'}">
+        ${diff>0?diff+' days away':diff===0?'TODAY!':'Done'}
+        ${isNext?'⬅️ Next':''}
+      </div>
     </div>`;
   }).join('');
 }
 
+function renderExamFull(){
+  document.getElementById('examFullList').innerHTML=EXAMS.map(e=>{
+    const m=SM[e.subj];
+    const exam=new Date(e.date);
+    const now=new Date();
+    const diff=Math.ceil((exam-now)/86400000);
+    return`<div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid ${m.color};border-radius:10px;padding:14px 18px;margin-bottom:9px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+      <div>
+        <div style="font-weight:700;font-size:14px;color:${m.color};margin-bottom:3px">${m.icon} ${e.subj} — ${e.paper}</div>
+        <div style="font-size:12px;color:var(--text2)">📅 ${e.day} &nbsp;|&nbsp; ⏰ ${e.time} &nbsp;|&nbsp; Paper Code: <span style="font-family:'JetBrains Mono',monospace">${e.code}</span></div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:${diff<=3?'#ff9a9a':diff<=7?'var(--accent4)':'var(--text)'};">${diff>0?diff:diff===0?'TODAY':'✓'}</div>
+        <div style="font-size:11px;color:var(--text3)">${diff>0?'days away':diff===0?'TODAY!':'completed'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderStrategy(){
+  document.getElementById('stratGrid').innerHTML=LAST_WEEK_STRATEGY.map(s=>`
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent4);margin-bottom:5px">${s.day}</div>
+      <div style="font-weight:600;font-size:13px;margin-bottom:4px">${s.focus}</div>
+      <div style="font-size:11px;color:var(--text3)">${s.tip}</div>
+    </div>`).join('');
+}
+
+// ===================== COUNTDOWN =====================
+function updateCountdown(){
+  const now=new Date();
+  // Find next exam
+  const nextExam=EXAMS.find(e=>new Date(e.date)>now)||EXAMS[EXAMS.length-1];
+  const target=new Date(nextExam.date+'T14:30:00');
+  const diff=target-now;
+  if(diff>0){
+    document.getElementById('cdD').textContent=Math.floor(diff/86400000);
+    document.getElementById('cdH').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cdM').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    const m=SM[nextExam.subj];
+    document.getElementById('cdInfo').innerHTML=`<div class="cd-next" style="color:${m.color}">${m.icon} ${nextExam.subj} Exam</div><div class="cd-sub">${nextExam.day}</div>`;
+  }
+  const today=now;
+  document.getElementById('stStudy').textContent=Math.max(0,Math.ceil((STUDY_END-today)/86400000));
+  const firstExam=new Date(EXAMS[0].date);
+  document.getElementById('stExam').textContent=Math.max(0,Math.ceil((firstExam-today)/86400000));
+  renderExamStrip();
+}
+
+// ===================== CYCLE GRID =====================
+function renderCycle(){
+  const g=document.getElementById('cycleGrid'),today=getToday();
+  const tidx=SCHED.findIndex(d=>d.date===today);
+  g.innerHTML=CYCLE.map((c,i)=>{
+    const isTod=tidx!==-1&&(tidx%7)===i;
+    const s1=SM[c.sub1],s2=SM[c.sub2];
+    return`<div class="c-day ${isTod?'today-c':''}">
+      <div class="c-day-n">${i+1}</div>
+      <div class="c-subs">
+        <div class="cpill" style="background:${s1.bg};color:${s1.color}">${c.sub1}</div>
+        <div class="cpill" style="background:${s2.bg};color:${s2.color}">${c.sub2}</div>
+      </div></div>`;
+  }).join('');
+}
+
+// ===================== SUBJECTS =====================
+function renderSubjects(){
+  document.getElementById('subjGrid').innerHTML=Object.entries(SM).map(([k,m])=>{
+    const d=D.subjects[k]||{progress:0,hours:0};
+    return`<div class="subj-card">
+      <div class="subj-name"><div class="sdot" style="background:${m.color}"></div>${m.icon} ${k}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px">${m.name}</div>
+      <div class="prog-wrap"><div class="prog-fill" id="pb_${k}" style="width:${d.progress}%;background:${m.color}"></div></div>
+      <div class="subj-meta"><span>${d.progress}%</span><span>${(d.hours||0).toFixed(1)}h studied</span></div>
+      <div class="exam-info-small" style="background:${m.bg};color:${m.color}">📅 Exam: ${m.examDate}</div>
+    </div>`;
+  }).join('');
+}
+
+// ===================== DASHBOARD =====================
 function renderDash(){
-  const today=getToday(),td=D.daily[today]||{slots:[],sessions:[],tasks:[]};
-  const doneTasks=(td.tasks||[]).filter(t=>t.completed).length;
-  document.getElementById('stTasks').textContent=doneTasks;
+  const t=getToday(),td=D.daily[t]||{slots:[],sessions:[],tasks:[]};
+  const dt=(td.tasks||[]).filter(x=>x.completed).length;
+  document.getElementById('stTasks').textContent=dt;
   let th=0;Object.values(D.subjects).forEach(s=>th+=(s.hours||0));
   document.getElementById('stHours').textContent=th.toFixed(1);
 
-  const todaySD=SCHED.find(d=>d.date===today);
+  const tSD=SCHED.find(d=>d.date===t);
   const box=document.getElementById('todayCycleBox');
-  if(!todaySD){box.innerHTML='📅 Outside study period. Exams start <strong>16 Apr 2026</strong>. Keep revising!';
+  if(!tSD){
+    // Check if in exam week
+    const now=new Date();
+    const nextE=EXAMS.find(e=>new Date(e.date)>=now);
+    if(nextE){const m=SM[nextE.subj];box.innerHTML=`📅 Study period ended. <strong>Next exam: ${m.icon} ${nextE.subj}</strong> on ${nextE.day} · ${nextE.time}`;}
+    else box.innerHTML='🎉 All exams done! Great work!';
   }else{
-    const s1=SM[todaySD.sub1],s2=SM[todaySD.sub2];
-    box.innerHTML=`📍 <strong>Today: Study Day ${todaySD.dayNum} (${todaySD.cycleLabel})</strong> — ☀️ Morning: <span style="color:${s1.color}">${s1.icon} ${todaySD.sub1}</span> &nbsp;|&nbsp; 🌤️ Afternoon: <span style="color:${s2.color}">${s2.icon} ${todaySD.sub2}</span> &nbsp;|&nbsp; 🌙 Night: Revise both`;
+    const s1=SM[tSD.sub1],s2=SM[tSD.sub2];
+    box.innerHTML=`📍 <strong>Today: Study Day ${tSD.dayNum} (${tSD.cycleLabel})</strong> — ☀️ <span style="color:${s1.color}">${s1.icon} ${tSD.sub1}</span> &nbsp;|&nbsp; 🌤️ <span style="color:${s2.color}">${s2.icon} ${tSD.sub2}</span> &nbsp;|&nbsp; 🌙 Night Revision`;
   }
 
-  const sessions=td.sessions||[];
-  const sumBox=document.getElementById('todaySummaryBox');
-  if(sessions.length===0&&doneTasks===0)sumBox.innerHTML='No sessions logged today yet. 💪';
-  else sumBox.innerHTML=`Today: <strong>${sessions.length}</strong> session(s) logged · <strong>${doneTasks}</strong> task(s) done ✅`;
+  const sessions=(td.sessions||[]).filter(s=>s.subject);
+  const sb=document.getElementById('todaySumBox');
+  if(!sessions.length&&!dt)sb.innerHTML='No sessions logged today yet. 💪';
+  else sb.innerHTML=`Today: <strong>${sessions.length}</strong> session(s) · <strong>${dt}</strong> task(s) done ✅`;
 }
 
-// --- WEEK SELECTOR ---
-let activeWeekIdx=0;
+// ===================== WEEK SELECTOR =====================
+let activeW=0;
 function renderWeekSel(){
-  const sel=document.getElementById('weekSel');
   const now=new Date();
   const curW=Math.min(2,Math.max(0,Math.floor((now-STUDY_START)/86400000/7)));
-  sel.innerHTML=['Week 1 (Mar 11–17)','Week 2 (Mar 18–24)','Week 3 (Mar 25–31)'].map((lbl,i)=>`
-    <button class="week-btn ${i===0?'active':''} ${i===curW?'cur':''}" id="wb${i}" onclick="setWeek(${i})">${lbl}</button>`).join('');
+  const labels=['Week 1 (Mar 11–17)','Week 2 (Mar 18–24)','Week 3 (Mar 25–31)'];
+  document.getElementById('weekSel').innerHTML=labels.map((l,i)=>`<button class="wbtn ${i===0?'active':''} ${i===curW?'cur-week':''}" id="wb${i}" onclick="setWeek(${i})">${l}</button>`).join('');
 }
 function setWeek(i){
-  activeWeekIdx=i;
-  document.querySelectorAll('.week-btn').forEach(b=>b.classList.remove('active'));
+  activeW=i;
+  document.querySelectorAll('.wbtn').forEach(b=>b.classList.remove('active'));
   const wb=document.getElementById('wb'+i);if(wb)wb.classList.add('active');
   showWeek(i);
 }
@@ -415,128 +535,119 @@ function showWeek(wi){
   const days=SCHED.slice(wi*7,(wi+1)*7);
   const today=getToday();
   document.getElementById('weekContent').innerHTML=days.map(day=>{
-    const isToday=day.date===today;
+    const isT=day.date===today;
     const td=D.daily[day.date]||{slots:[],sessions:[]};
-    const doneSlots=(td.slots||[]);
+    const ds=td.slots||[];
     const s1=SM[day.sub1],s2=SM[day.sub2];
     const dn=day.dt.toLocaleDateString('en-US',{weekday:'long'});
-    const ds=day.dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const dd=day.dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     const rows=day.slots.map(sl=>{
-      const done=doneSlots.includes(sl.slot);
+      const done=ds.includes(sl.slot);
       const sm=sl.subj?SM[sl.subj]:null;
       return`<tr class="${done?'done-row':''}">
-        <td class="time-cell">${sl.label}<br>${sl.time}</td>
-        <td>${sm?`<span class="subj-tag" style="background:${sm.bg};color:${sm.color}">${sm.icon} ${sl.subj}</span>`:'<span style="color:var(--text3);font-size:11px">Both</span>'}</td>
+        <td class="tcell">${sl.label}<br>${sl.time}</td>
+        <td>${sm?`<span class="stag" style="background:${sm.bg};color:${sm.color}">${sm.icon} ${sl.subj}</span> <span style="font-size:10px;color:var(--text3)">Exam: ${sm.examDate}</span>`:'<span style="color:var(--text3);font-size:11px">Both subjects</span>'}</td>
         <td style="color:var(--text2)">${sl.desc}</td>
         <td><button class="status-btn ${done?'is-done':''}" onclick="toggleSlot('${day.date}','${sl.slot}')">${done?'✅ Done':'Mark Done'}</button></td>
       </tr>`;
     }).join('');
-    return`<div class="day-block ${isToday?'today-hl':''}">
+    return`<div class="day-block ${isT?'today-hl':''}">
       <div class="day-hdr">
-        <div class="day-title">${dn}, ${ds} ${isToday?'<span class="today-badge">TODAY</span>':''} <span style="font-size:11px;color:var(--text3)">Day ${day.dayNum} · ${day.cycleLabel}</span></div>
-        <div style="display:flex;align-items:center;gap:7px;">
-          <span class="subj-tag" style="background:${s1.bg};color:${s1.color};font-size:11px">${s1.icon} ${day.sub1}</span>
-          <span class="subj-tag" style="background:${s2.bg};color:${s2.color};font-size:11px">${s2.icon} ${day.sub2}</span>
-          <span class="day-prog">${doneSlots.length}/3</span>
+        <div class="day-title">${dn}, ${dd} ${isT?'<span class="today-badge">TODAY</span>':''} <span style="font-size:10px;color:var(--text3)">Day ${day.dayNum} · ${day.cycleLabel}</span></div>
+        <div class="day-right">
+          <span class="stag" style="background:${s1.bg};color:${s1.color};font-size:11px">${s1.icon} ${day.sub1}</span>
+          <span class="stag" style="background:${s2.bg};color:${s2.color};font-size:11px">${s2.icon} ${day.sub2}</span>
+          <span class="day-prog">${ds.length}/3</span>
         </div>
       </div>
-      <table class="sess-table"><thead><tr><th>Time Slot</th><th>Subject</th><th>Goal</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="st"><thead><tr><th>Time Slot</th><th>Subject</th><th>Goal</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
     </div>`;
   }).join('');
 }
 
 function toggleSlot(date,slot){
   if(!D.daily[date])D.daily[date]={slots:[],sessions:[],tasks:[]};
-  const slots=D.daily[date].slots;
-  const idx=slots.indexOf(slot);
-  if(idx>-1)slots.splice(idx,1);else slots.push(slot);
-  saveD();showWeek(activeWeekIdx);renderDash();
+  const s=D.daily[date].slots;
+  const i=s.indexOf(slot);
+  if(i>-1)s.splice(i,1);else s.push(slot);
+  saveD();showWeek(activeW);renderDash();
 }
 
-// --- LOG SESSION ---
+// ===================== LOG SESSION =====================
 function logSession(){
   const subj=document.getElementById('subjSel').value;
   const hrs=parseFloat(document.getElementById('sessHrs').value);
   if(!subj||isNaN(hrs)||hrs<=0){alert('⚠️ Fill required fields');return;}
-  const sess={
-    time:document.getElementById('sessTime').value,
-    subject:subj,hours:hrs,
-    slot:document.getElementById('sessSlot').value,
-    notes:document.getElementById('sessNotes').value,
-    date:getToday(),ts:Date.now()
-  };
-  const today=getToday();
-  if(!D.daily[today])D.daily[today]={slots:[],sessions:[],tasks:[]};
-  D.daily[today].sessions.push(sess);
+  const sess={time:document.getElementById('sessTime').value,subject:subj,hours:hrs,slot:document.getElementById('sessSlot').value,notes:document.getElementById('sessNotes').value,date:getToday(),ts:Date.now()};
+  const t=getToday();
+  if(!D.daily[t])D.daily[t]={slots:[],sessions:[],tasks:[]};
+  D.daily[t].sessions.push(sess);
   if(!D.subjects[subj])D.subjects[subj]={progress:0,hours:0};
   D.subjects[subj].hours=(D.subjects[subj].hours||0)+hrs;
   D.subjects[subj].progress=Math.min(100,(D.subjects[subj].progress||0)+Math.round(hrs*4));
-  saveD();renderTodaySess();renderHistory();renderSubjects();renderDash();
+  saveD();renderTodaySess();renderHist();renderSubjects();renderDash();
   document.getElementById('sessNotes').value='';
   toast('✅ Session logged!');
 }
 
 function renderTodaySess(){
-  const today=getToday();
-  const sessions=(D.daily[today]?.sessions||[]).filter(s=>s.subject);
+  const t=getToday(),sessions=(D.daily[t]?.sessions||[]).filter(s=>s.subject);
   const c=document.getElementById('todaySessDiv');
   if(!sessions.length){c.innerHTML='<p style="color:var(--text3);font-size:13px;">No sessions logged today.</p>';return;}
   c.innerHTML=sessions.map(s=>{
     const m=SM[s.subject];
     return`<div class="sess-card tc">
-      <div><div style="font-size:13px"><span class="subj-tag" style="background:${m.bg};color:${m.color}">${m.icon} ${s.subject}</span> &nbsp;<strong>${s.hours}h</strong> · ${s.slot||''} · ${s.time}</div>
-      <div style="font-size:11px;color:var(--text3);margin-top:3px">${s.notes||'No notes'}</div></div>
+      <div><div style="font-size:13px"><span class="stag" style="background:${m.bg};color:${m.color}">${m.icon} ${s.subject}</span> &nbsp;<strong>${s.hours}h</strong> · ${s.slot} · ${s.time}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">${s.notes||'No notes'}</div></div>
       <button class="btn btn-danger btn-sm" onclick="removeSession(${s.ts})">🗑️</button>
     </div>`;
   }).join('');
 }
 
-function renderHistory(){
+function renderHist(){
   let all=[];
   Object.entries(D.daily).forEach(([date,d])=>(d.sessions||[]).filter(s=>s.subject).forEach(s=>all.push({...s,date})));
   all.sort((a,b)=>b.ts-a.ts);
-  const c=document.getElementById('historyDiv');
+  const c=document.getElementById('histDiv');
   if(!all.length){c.innerHTML='<p style="color:var(--text3);font-size:13px;">No sessions yet.</p>';return;}
-  c.innerHTML=all.slice(0,12).map(s=>{
+  c.innerHTML=all.slice(0,14).map(s=>{
     const m=SM[s.subject];
-    return`<div class="sess-card">
-      <div><div style="font-size:13px"><span class="subj-tag" style="background:${m.bg};color:${m.color}">${m.icon} ${s.subject}</span> &nbsp;<strong>${s.hours}h</strong></div>
-      <div style="font-size:11px;color:var(--text3);margin-top:3px">${s.date} · ${s.slot||''} · ${s.notes||''}</div></div>
-    </div>`;
+    return`<div class="sess-card"><div>
+      <div style="font-size:13px"><span class="stag" style="background:${m.bg};color:${m.color}">${m.icon} ${s.subject}</span> &nbsp;<strong>${s.hours}h</strong></div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">${s.date} · ${s.slot||''} · ${s.notes||'–'}</div>
+    </div></div>`;
   }).join('');
 }
 
 function removeSession(ts){
   const t=getToday();
   if(D.daily[t])D.daily[t].sessions=D.daily[t].sessions.filter(s=>s.ts!==ts);
-  saveD();renderTodaySess();renderHistory();renderDash();
+  saveD();renderTodaySess();renderHist();renderDash();
 }
 
-// --- TASKS ---
+// ===================== TASKS =====================
 function addTask(){
   const text=document.getElementById('newTask').value.trim();
   if(!text){alert('⚠️ Enter a task');return;}
   const task={id:Date.now(),text,subject:document.getElementById('taskSubj').value,priority:document.getElementById('taskPri').value,completed:false,date:getToday()};
   D.tasks.push(task);
-  const today=getToday();
-  if(!D.daily[today])D.daily[today]={slots:[],sessions:[],tasks:[]};
-  D.daily[today].tasks.push(task);
+  const t=getToday();
+  if(!D.daily[t])D.daily[t]={slots:[],sessions:[],tasks:[]};
+  D.daily[t].tasks.push(task);
   saveD();renderTasks();document.getElementById('newTask').value='';
   toast('✅ Task added!');
 }
 
 function renderTasks(){
-  const today=getToday();
-  const tasks=D.daily[today]?.tasks||[];
+  const t=getToday(),tasks=D.daily[t]?.tasks||[];
   const c=document.getElementById('taskListDiv');
   if(!tasks.length){c.innerHTML='<p style="color:var(--text3);font-size:13px;">No tasks yet.</p>';return;}
   c.innerHTML=tasks.map(t=>{
     const pc=t.priority==='high'?'p-high':t.priority==='medium'?'p-medium':'p-low';
-    const sm=t.subject!=='General'&&SM[t.subject]?`<span class="subj-tag" style="background:${SM[t.subject].bg};color:${SM[t.subject].color};font-size:10px">${t.subject}</span>`:'';
+    const sm=t.subject!=='General'&&SM[t.subject]?`<span class="stag" style="background:${SM[t.subject].bg};color:${SM[t.subject].color};font-size:10px">${t.subject}</span>`:'';
     return`<div class="task-item ${t.completed?'done':''}">
-      <div><div class="task-text">${t.text}</div>
-      <div class="task-meta">${sm}<span class="pri ${pc}">${t.priority}</span></div></div>
-      <div class="task-btns">
+      <div><div class="ttxt">${t.text}</div><div class="tmeta">${sm}<span class="pri ${pc}">${t.priority}</span></div></div>
+      <div class="tbtns">
         <button class="btn btn-success btn-sm" onclick="toggleTask(${t.id})">${t.completed?'↩️':'✅'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteTask(${t.id})">🗑️</button>
       </div>
@@ -557,16 +668,15 @@ function deleteTask(id){
 
 function markTodayComplete(){
   if(!confirm('🎉 Mark today as complete?'))return;
-  const today=getToday();
-  if(!D.daily[today])D.daily[today]={slots:[],sessions:[],tasks:[]};
-  D.daily[today].complete=true;
-  saveD();toast('🎉 Great work today!');renderDash();
+  const t=getToday();
+  if(!D.daily[t])D.daily[t]={slots:[],sessions:[],tasks:[]};
+  D.daily[t].complete=true;saveD();toast('🎉 Great work today!');renderDash();
 }
 
 function toast(msg){
   const t=document.createElement('div');
-  t.style.cssText='position:fixed;bottom:22px;right:22px;background:var(--accent);color:#fff;padding:11px 18px;border-radius:8px;font-size:13px;font-family:Space Grotesk,sans-serif;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.35);';
-  t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2400);
+  t.style.cssText='position:fixed;bottom:20px;right:20px;background:var(--accent);color:#fff;padding:10px 17px;border-radius:8px;font-size:13px;font-family:Space Grotesk,sans-serif;z-index:9999;box-shadow:0 8px 22px rgba(0,0,0,0.35);';
+  t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2300);
 }
 
 document.addEventListener('DOMContentLoaded',loadD);
